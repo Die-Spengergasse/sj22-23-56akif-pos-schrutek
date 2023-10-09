@@ -7,8 +7,12 @@ public class Person
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public string EMail { get; set; }
+    public Nullable<decimal> Salary { get; set; }
 
     public long SocialSecurityNumber { get; set; }
+
+    public string ShortName =>
+        LastName.Substring(0, 3).ToUpper();
 
     public int MyProperty
     {
@@ -26,8 +30,8 @@ public class Person
 
     public DateTime BirthDate { get; }
 
-    //public Person()
-    //{ }
+    public Person()
+    { }
 
     public Person(DateTime birthDate)
     {
@@ -45,15 +49,20 @@ public class Person
     {
         FirstName = firstName;
         LastName = lastName;
+        EMail = null;
+        Salary = null;
     }
 
-    public string GetFullName()
+    public string GetFullName() 
+        => $"{FirstName} - {LastName} : E-Mail {EMail}";
+
+    public string FullName 
+        => $"{FirstName} - {LastName}";
+
+    public void CalcSalaryWhatEver()
     {
-        //StringBuilder sb = new StringBuilder();
-        //sb.Append(FirstName);
-
-        var i = new Int64(); 
-
-        return $"{FirstName} - {LastName} : E-Mail {EMail}";
+        string result = Salary.Value.ToString();
     }
+
+
 }
