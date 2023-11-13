@@ -23,4 +23,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Spg.Sayonara.DomainModel\Spg.Sayonara.DomainModel.csproj" />
+    <ProjectReference Include="..\..\src\Spg.Sayonara.Infrastructure\Spg.Sayonara.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

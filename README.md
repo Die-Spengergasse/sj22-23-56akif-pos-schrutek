@@ -24,7 +24,7 @@ x
 
 ## C# Example
 
-``` C#
+```C#
 SchoolClass scB401 = new SchoolClass() { RoomNumber = "B4.01" };
 MyList<SchoolClass> schoolClasses = new MyList<SchoolClass>()
 {
@@ -46,17 +46,16 @@ MyList<SchoolClass> schoolClasses = new MyList<SchoolClass>()
 
 ## HTML Example
 
-``` html
+```html
 <h1>Welcome!!</h1>
 ```
 
 ## Domain Model
 
-``` plantuml
-
+```plantuml
 @startuml
 
-entity Person {
+abstract class Person {
     + Id: int
     + Guid: Guid
     + Gender: Genders
@@ -72,7 +71,7 @@ entity Customer {
     + Address: Address
 }
 
-entity BackOffice {
+entity Employee {
     + EmployeeId: int
 }
 
@@ -82,7 +81,7 @@ entity Shop {
     + CompanySuffix: string
     + Address: Address
     + PhoneNumber: PhoneNumber
-    + EMail: EMail
+    + EMail: Set<EMail>
 }
 
 entity Category {
@@ -108,10 +107,12 @@ entity ShoppingCartProduct {
     + Id: int
     + Guid: Guid
     + Procuct: Product
+    + Pieces: int
 }
 
 enum ShoppingCartStates {
     Active
+    Payed
     Sent
     Delivered
     Unknown = 99
@@ -142,7 +143,7 @@ class EMail << (V,#FF7700) Embeddable >> {
 Shop "1" o-- "*" Category : < ownes one
 Category "0..1" o-- "1..n" Product  : < ownes one or zero
 Customer .. Genders
-Customer o-- ShoppingCart : < ownes one
+Customer "1" o-- "1..n" ShoppingCart : < ownes one
 ShoppingCart "1" *-- "1..n" ShoppingCartProduct
 Product "1"  *-- "1..n" ShoppingCartProduct
 ShoppingCart .. ShoppingCartStates
@@ -153,10 +154,12 @@ Shop -- Address
 Shop -- PhoneNumber
 Shop -- EMail
 
-
 Customer --|> Person
-BackOffice --|> Person
+Employee --|> Person
+
+hide empty members
 
 @enduml
-
 ```
+
+xxxx
