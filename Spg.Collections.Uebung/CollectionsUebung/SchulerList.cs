@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace CollectionsUebung
 {
-    public class SchulerList : List<Schueler>
+    public class SchulerList : List<Student>
     {
-        public Klasse Klasse { get; set; }
+        public Classroom Klasse { get; set; }
 
-        public SchulerList(Klasse klasse)
+        public SchulerList(Classroom klasse)
         {
             Klasse = klasse;
         }
 
-        public new void Add(Schueler s)
+        public new void Add(Student s)
         {
             if (s != null)
             {

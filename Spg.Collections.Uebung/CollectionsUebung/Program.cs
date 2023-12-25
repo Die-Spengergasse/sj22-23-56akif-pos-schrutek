@@ -5,36 +5,37 @@ using System.Linq;
 
 namespace ExCollection.App
 {
-    public class Klasse
+    public class Classroom
     {
-        public Klasse(string name, string kV)
+        public Classroom(string name, string kV)
         {
             Name = name;
             KV = kV;
         }
 
-        // TODO: Erstelle ein Property Schuelers, welches alle Schüler der Klasse in einer
+        // TODO: Erstelle ein Property Students, welches alle Schüler der Classroom in einer
         //       Liste speichert.
-        public List<Schueler> Schuelers { get; set; }
+        private List<Student> _students = new();
+        public IReadOnlyList<Student> Students { get { return _students; } }
 
         public string Name { get; private set; }
         public string KV { get; private set; }
 
         /// <summary>
-        /// Fügt den Schüler zur Liste hinzu und setzt das Property KlasseNavigation
+        /// Fügt den Schüler zur Liste hinzu und setzt das Property ClassroomNavigation
         /// des Schülers korrekt auf die aktuelle Instanz.
         /// </summary>
         /// <param name="s"></param>
-        public void AddSchueler(Schueler s)
+        public void AddStudent(Student s)
         {
             if (s is not null)
             {
-                if (Schuelers.Any(i => i.Id == s.Id))
+                if (Students.Any(i => i.Id == s.Id))
                 {
                     throw new KeyNotFoundException("Schüler ist bereits vorhanden!");
                 }
-                Schuelers.Add(s);
-                s.KlasseNavigation = this;
+                _students.Add(s);
+                s.ClassroomNavigation = this;
             }
             else
             {
@@ -42,15 +43,15 @@ namespace ExCollection.App
             }
         }
 
-        public void RemoveSchueler(Schueler s)
+        public void RemoveSchueler(Student s)
         {
             if (s is not null)
             {
-                if (!Schuelers.Any(i => i.Id == s.Id))
+                if (!Students.Any(i => i.Id == s.Id))
                 {
                     throw new KeyNotFoundException("Schüler nicht vorhanden!");
                 }
-                Schuelers.Remove(s);
+                _students.Remove(s);
             }
             else
             {
@@ -58,7 +59,7 @@ namespace ExCollection.App
             }
         }
     }
-    public class Schueler
+    public class Student
     {
         //{
         //    A: "a",
@@ -68,13 +69,13 @@ namespace ExCollection.App
         //    }
         //}
 
-        // TODO: Erstelle ein Proeprty KlasseNavigation vom Typ Klasse, welches auf
-        //       die Klasse des Schülers zeigt.
+        // TODO: Erstelle ein Proeprty ClassroomNavigation vom Typ Classroom, welches auf
+        //       die Classroom des Schülers zeigt.
         // Füge dann über das Proeprty die Zeile
         // [JsonIgnore]
         // ein, damit der JSON Serializer das Objekt ausgeben kann.
         [JsonIgnore]
-        public Klasse KlasseNavigation { get; set; } = default!;
+        public Classroom ClassroomNavigation { get; set; } = default!;
 
         public int Id { get; set; }
 
@@ -84,20 +85,20 @@ namespace ExCollection.App
 
         /// <summary>
         /// Ändert die Klassenzugehörigkeit, indem der Schüler
-        /// aus der alten Klasse, die in KlasseNavigation gespeichert ist, entfernt wird.
-        /// Danach wird der Schüler in die neue Klasse mit der korrekten Navigation eingefügt.
+        /// aus der alten Classroom, die in ClassroomNavigation gespeichert ist, entfernt wird.
+        /// Danach wird der Schüler in die neue Classroom mit der korrekten Navigation eingefügt.
         /// </summary>
         /// <param name="k"></param>
-        public void ChangeKlasse(Klasse k)
+        public void ChangeKlasse(Classroom k)
         {
             if (k is not null)
             {
-                KlasseNavigation.RemoveSchueler(this);
-                k.AddSchueler(this);
+                ClassroomNavigation.RemoveSchueler(this);
+                k.AddStudent(this);
             }
             else
             {
-                throw new ArgumentNullException("Klasse war NULL!");
+                throw new ArgumentNullException("Classroom war NULL!");
             }
         }
     }
@@ -106,48 +107,56 @@ namespace ExCollection.App
     {
         public static void Main(string[] args)
         {
-            Dictionary<string, Klasse> klassen = new Dictionary<string, Klasse>();
-            klassen.Add("3AHIF", new Klasse("3AHIF", "KV1" ));
-            klassen.Add("3BHIF", new Klasse(name: "3BHIF", kV: "KV2" ));
-            klassen.Add("3CHIF", new Klasse(kV: "KV3" , name: "3CHIF"));
-            klassen["3AHIF"].AddSchueler(new Schueler() { Id = 1001, Vorname = "VN1", Zuname = "ZN1" });
-            klassen["3AHIF"].AddSchueler(new Schueler() { Id = 1002, Vorname = "VN2", Zuname = "ZN2" });
-            klassen["3AHIF"].AddSchueler(new Schueler() { Id = 1003, Vorname = "VN3", Zuname = "ZN3" });
-            klassen["3BHIF"].AddSchueler(new Schueler() { Id = 1011, Vorname = "VN4", Zuname = "ZN4" });
-            klassen["3BHIF"].AddSchueler(new Schueler() { Id = 1012, Vorname = "VN5", Zuname = "ZN5" });
-            klassen["3BHIF"].AddSchueler(new Schueler() { Id = 1013, Vorname = "VN6", Zuname = "ZN6" });
+            Dictionary<string, Classroom> klassen = new Dictionary<string, Classroom>();
+            klassen.Add("3AHIF", new Classroom("3AHIF", "KV1" ));
+            klassen.Add("3BHIF", new Classroom(name: "3BHIF", kV: "KV2" ));
+            klassen.Add("3CHIF", new Classroom(kV: "KV3" , name: "3CHIF"));
+            klassen["3AHIF"].AddStudent(new Student() { Id = 1001, Vorname = "VN1", Zuname = "ZN1" });
+            klassen["3AHIF"].AddStudent(new Student() { Id = 1002, Vorname = "VN2", Zuname = "ZN2" });
+            klassen["3AHIF"].AddStudent(new Student() { Id = 1003, Vorname = "VN3", Zuname = "ZN3" });
+            klassen["3BHIF"].AddStudent(new Student() { Id = 1011, Vorname = "VN4", Zuname = "ZN4" });
+            klassen["3BHIF"].AddStudent(new Student() { Id = 1012, Vorname = "VN5", Zuname = "ZN5" });
+            klassen["3BHIF"].AddStudent(new Student() { Id = 1013, Vorname = "VN6", Zuname = "ZN6" });
 
-            //foreach (Schueler schueler in klassen["3AHIF"].Schuelers)
+            //foreach (Student schueler in klassen["3AHIF"].Students)
             //{
             //    if (schueler.Id == 1002)
             //    {
-            //        klassen["3AHIF"].Schuelers.RemoveAt(i);
+            //        klassen["3AHIF"].Students.RemoveAt(i);
             //    }
             //}
 
-            //for (int i = 0 ; i <= klassen["3AHIF"].Schuelers.Count - 1; i++)
+            //for (int i = 0 ; i <= klassen["3AHIF"].Students.Count - 1; i++)
             //{
             //    if (i == 1)
             //    {
-            //        klassen["3AHIF"].Schuelers.RemoveAt(i);
+            //        klassen["3AHIF"].Students.RemoveAt(i);
             //    }
             //}
 
-            Schueler s = klassen["3AHIF"].Schuelers[0];
-            Console.WriteLine($"s sitzt in der Klasse {s.KlasseNavigation.Name} mit dem KV {s.KlasseNavigation.KV}.");
+            Student s = klassen["3AHIF"].Students[0];
+            Console.WriteLine($"s sitzt in der Classroom {s.ClassroomNavigation.Name} mit dem KV {s.ClassroomNavigation.KV}.");
             Console.WriteLine("3AHIF vor ChangeKlasse:");
-            Console.WriteLine(JsonConvert.SerializeObject(klassen["3AHIF"].Schuelers));
+            Console.WriteLine(JsonConvert.SerializeObject(klassen["3AHIF"].Students));
             s.ChangeKlasse(klassen["3BHIF"]);
 
             Console.WriteLine("3AHIF nach ChangeKlasse:");
-            Console.WriteLine(JsonConvert.SerializeObject(klassen["3AHIF"].Schuelers));
+            Console.WriteLine(JsonConvert.SerializeObject(klassen["3AHIF"].Students));
             Console.WriteLine("3BHIF nach ChangeKlasse:");
-            Console.WriteLine(JsonConvert.SerializeObject(klassen["3BHIF"].Schuelers));
-            Console.WriteLine($"s sitzt in der Klasse {s.KlasseNavigation.Name} mit dem KV {s.KlasseNavigation.KV}.");
+            Console.WriteLine(JsonConvert.SerializeObject(klassen["3BHIF"].Students));
+            Console.WriteLine($"s sitzt in der Classroom {s.ClassroomNavigation.Name} mit dem KV {s.ClassroomNavigation.KV}.");
 
-            //klassen["3BHIF"].Schuelers.Add(new Schueler() { Id = 4711, Vorname = "asdasd", Zuname = "qweqwe" });    //Bad
-            //klassen["3BHIF"].AddSchueler(new Schueler() { Id = 4711, Vorname = "asdasd", Zuname = "qweqwe" });      //OK
-            //klassen["3BHIF"].Schuelers = new List<Schueler>();
+            
+            
+            
+            //klassen["3BHIF"].Students.Add(new Student() { Id = 4711, Vorname = "asdasd", Zuname = "qweqwe" });    //Bad
+            klassen["3BHIF"].AddStudent(new Student() { Id = 4711, Vorname = "asdasd", Zuname = "qweqwe" });      //OK
+            
+            
+            
+            
+            
+            //klassen["3BHIF"].Students = new List<Student>();
         }
     }
 }
