@@ -1,7 +1,20 @@
+using Bogus;
+using Microsoft.EntityFrameworkCore;
+using Spg.Sayonara.Infrastructure;
+using Spg.Sayonara.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
+
+string connectionString = builder.Configuration.GetConnectionString("sqlite")!;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<SayonaraContext>(o =>
+{
+    o.UseSqlite(connectionString);
+});
+
+builder.Services.AddScoped(r => new ProductRepository(null!, 5));
 
 var app = builder.Build();
 

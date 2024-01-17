@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Spg.Sayonara.DomainModel.Model
+namespace Spg.Sayonara.Repository.Builder
 {
-    public class Employee : Person
+    public class ProductUpdateBuilder
     {
-        public int EmployeeId { get; set; }
     }
 }

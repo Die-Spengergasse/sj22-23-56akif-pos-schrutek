@@ -1,4 +1,7 @@
 namespace Spg.Sayonara.DomainModel.Exceptions 
 { 
-    public class ProductCreateException { } 
+    public class ProductCreateException : Exception
+    {
+        // TODO: Inhalt
+    }
 } 

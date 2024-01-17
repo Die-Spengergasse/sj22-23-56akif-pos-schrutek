@@ -26,12 +26,14 @@ namespace Spg.Sayonara.DomainModel.Model
         { }
 
         public int Id { get; set; } // PK, wird von der DB erstellt, int/long macht auto increment
-        public string Name { get; set; } = string.Empty; // in DB required Column
+        public string Name { get; set; }
         public string? CompanySuffix { get; set; } // in DB Allow NULL
         public Address? Address { get; set; }
         public PhoneNumber PhoneNumber { get; set; } = default!;
 
         private List<Category> _categories = new();
+        private string name = string.Empty;
+
         public IReadOnlyList<Category> Categories => _categories;
 
         //public EMail EMail { get; set; } // kommt später, weil Set<EMail>

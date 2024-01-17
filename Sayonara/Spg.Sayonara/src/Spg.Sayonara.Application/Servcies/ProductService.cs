@@ -23,7 +23,7 @@ namespace Spg.Sayonara.Application.Servcies
         public void Create(string name, string description, DateTime expiryDate)
         {
             // Init (Arrange)
-            Product newProduct = new Product(name, description, expiryDate);
+            Product newProduct = new Product(name, description, expiryDate, null);
 
             // Validation
             // Bedingungen:
