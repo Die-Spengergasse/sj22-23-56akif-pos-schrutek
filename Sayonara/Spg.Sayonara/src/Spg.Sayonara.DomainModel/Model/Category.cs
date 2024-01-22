@@ -35,6 +35,7 @@ namespace Spg.Sayonara.DomainModel.Model
             if (newProduct is not null)
             {
                 // TODO: Checks, Properties setzen, ...
+                newProduct.CategoryNavigation = this;
                 _products.Add(newProduct);
             }
             return this;

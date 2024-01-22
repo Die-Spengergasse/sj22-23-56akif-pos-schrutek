@@ -43,6 +43,7 @@ namespace Spg.Sayonara.DomainModel.Model
             if (newCategory is not null)
             {
                 // TODO: Checks, Properties setzen, ...
+                newCategory.ShopNavigation = this;
                 _categories.Add(newCategory);
             }
             return this;
