@@ -15,7 +15,7 @@ namespace Spg.Sayonara.Infrastructure
         public DbSet<Shop> Shops => Set<Shop>();
         public DbSet<Product> Products => Set<Product>();
         // ...
-        //public DbSet<Customer> Customers => Set<Customer>();
+        public DbSet<Customer> Customers => Set<Customer>();
 
         public SayonaraContext()
         { }
@@ -49,6 +49,10 @@ namespace Spg.Sayonara.Infrastructure
 
             modelBuilder.Entity<Shop>().OwnsOne(s => s.Address);
             modelBuilder.Entity<Shop>().OwnsOne(s => s.PhoneNumber);
+
+            modelBuilder.Entity<Customer>().OwnsOne(s => s.Address);
+            modelBuilder.Entity<Customer>().OwnsOne(s => s.PhoneNumber);
+            modelBuilder.Entity<Customer>().OwnsOne(s => s.EMail);
 
             // kann man tun, sollte man aber nicht. Ausnahme: EF Core verlangt es
             //modelBuilder.Entity<Shop>().HasMany(s => s.Categories).WithOne(c => c.ShopNavigation);

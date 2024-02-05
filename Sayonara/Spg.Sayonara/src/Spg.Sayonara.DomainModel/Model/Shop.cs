@@ -40,9 +40,9 @@ namespace Spg.Sayonara.DomainModel.Model
 
         public Shop AddCategory(Category newCategory)
         {
+            // TODO: Checks, Properties setzen, ...
             if (newCategory is not null)
             {
-                // TODO: Checks, Properties setzen, ...
                 newCategory.ShopNavigation = this;
                 _categories.Add(newCategory);
             }
@@ -53,7 +53,6 @@ namespace Spg.Sayonara.DomainModel.Model
         {
             var result = categories
                 .Where(c => c is not null)
-                .Distinct()
                 .Select(c => new Category(c.Name, this));
             _categories.AddRange(result);
             return this;
