@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Spg.Sayonara.FrontEnd.Models;
 using Spg.Sayonara.Infrastructure;
 using Spg.Sayonara.Repository;
@@ -10,11 +11,16 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly SayonaraContext _db;
+    private readonly IStringLocalizer<HomeController> _localizer;
 
-    public HomeController(ILogger<HomeController> logger, SayonaraContext db)
+    public HomeController(
+        ILogger<HomeController> logger, 
+        SayonaraContext db, 
+        IStringLocalizer<HomeController> localizer)
     {
         _logger = logger;
         _db = db;
+        _localizer = localizer;
 
         new DbSeedService(db)
             .Seed();
@@ -22,6 +28,8 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        ViewData["Greeting"] = _localizer["Greeting"];
+
         return View();
     }
 

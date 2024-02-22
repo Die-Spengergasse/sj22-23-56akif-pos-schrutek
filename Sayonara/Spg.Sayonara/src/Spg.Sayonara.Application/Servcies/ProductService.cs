@@ -31,34 +31,34 @@ namespace Spg.Sayonara.Application.Servcies
             // * User darf das tun
             // * ... 
             // THE FOLLOWING IST BAD-CODING!!!!!!!!!!!!!!
-            if (expiryDate >= _dateTimeService.Now.AddDays(14))
-            {
-                // * Name muss eindeutig sein
-                if (_db.Products.Any(p => p.Name != name))
-                {
-                    // * [unknown] darf nicht als Beschreibung verewendet werden.
-                    if (description != "[unknown]")
-                    {
-                        // Act
-                        _db.Products.Add(newProduct);
-                        // Save
-                        // TODO: Exception Handling
-                        _db.SaveChanges();
-                    }
-                    else
-                    {
-                        throw new Exception();
-                    }
-                }
-                else 
-                {
-                    throw new Exception();
-                }
-            }
-            else
-            {
-                throw new Exception();
-            }
+            //if (expiryDate >= _dateTimeService.Now.AddDays(14))
+            //{
+            //    // * Name muss eindeutig sein
+            //    if (_db.Products.Any(p => p.Name != name))
+            //    {
+            //        // * [unknown] darf nicht als Beschreibung verewendet werden.
+            //        if (description != "[unknown]")
+            //        {
+            //            // Act
+            //            _db.Products.Add(newProduct);
+            //            // Save
+            //            // TODO: Exception Handling
+            //            _db.SaveChanges();
+            //        }
+            //        else
+            //        {
+            //            throw new Exception();
+            //        }
+            //    }
+            //    else 
+            //    {
+            //        throw new Exception();
+            //    }
+            //}
+            //else
+            //{
+            //    throw new Exception();
+            //}
 
             //// Act
             //_db.Products.Add(newProduct);

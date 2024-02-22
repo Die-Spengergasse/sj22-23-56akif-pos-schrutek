@@ -65,7 +65,7 @@ namespace Spg.Sayonara.Repository.Test.Helpers
                 .AddProduct(GetSeedingProducts().ElementAt(10))
                 .AddProduct(GetSeedingProducts().ElementAt(13)),
                 new Category("Getränke")
-                .AddProduct(GetSeedingProducts().ElementAt(6))
+                .AddProduct(GetSeedingProducts().ElementAt(4))
                 .AddProduct(GetSeedingProducts().ElementAt(7))
                 .AddProduct(GetSeedingProducts().ElementAt(14)),
                 new Category("Kleidung")
@@ -114,4 +114,4 @@ namespace Spg.Sayonara.Repository.Test.Helpers
             };
         }
     }
-} 
+}

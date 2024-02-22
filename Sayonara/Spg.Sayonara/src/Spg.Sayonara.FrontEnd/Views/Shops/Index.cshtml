@@ -1,0 +1,22 @@
+﻿@using Spg.Sayonara.DomainModel.Model;
+
+@model List<Shop>
+
+<span>@DateTime.Now</span>
+
+@if (Model is null || Model.Count == 0)
+{
+    <span>Keine Shops vorhanden!</span>   
+}
+else
+{
+<table class="table table-striped">
+    @foreach(Shop shop in Model)
+    {
+        <tr>
+            <td>@shop.Name</td>
+            <td>@shop.CompanySuffix</td>
+        </tr>
+    }
+</table>
+}
