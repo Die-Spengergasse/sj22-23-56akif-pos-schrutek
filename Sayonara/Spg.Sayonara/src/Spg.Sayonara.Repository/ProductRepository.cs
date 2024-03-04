@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Identity.Client;
 using Spg.Sayonara.DomainModel.Exceptions;
 using Spg.Sayonara.DomainModel.Interfaces;
@@ -33,9 +34,19 @@ namespace Spg.Sayonara.Repository
 
         public int Create(Product entity)
         {
-            // TODO: ExceptionHandling
-            _context.Products.Add(entity);
-            return _context.SaveChanges();
+            try
+            {
+                _context.Products.Add(entity);
+                return _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                throw RepositoryCreateException.FromDbError(ex);
+            }
+            catch (DbUpdateException ex)
+            {
+                throw RepositoryCreateException.FromDbError(ex);
+            }
         }
 
         public void Delete(int id)

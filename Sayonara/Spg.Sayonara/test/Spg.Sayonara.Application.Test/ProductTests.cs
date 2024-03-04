@@ -25,38 +25,6 @@ public class ProductTests
     }
 
     [Fact]
-    public void Product_ShouldCreate_WhenExpiryDate2WeeksInFurture()
-    {
-        using (SayonaraContext db = CreateDb())
-        {
-            // Arrange
-            ProductService productService = new ProductService(db, new FakeDateTimeService(new DateTime(2024, 05, 03)), new CategoryRepository(db));
-            CreateProductCommand newProduct = new CreateProductCommand("Testname", "TestDescription", new DateTime(2024, 05, 27), 1);
-
-            // Act
-            productService.Create(newProduct);
-
-            // Assert
-            Assert.Equal(1, db.Products.Count());
-        }
-    }
-
-    [Fact]
-    public void Product_ShouldThrowExeption_WhenExpiryDateNot2WeeksInFurture()
-    {
-        using (SayonaraContext db = CreateDb())
-        {
-            ProductService productService = new ProductService(db, new FakeDateTimeService(new DateTime(2024, 05, 03)),new CategoryRepository(db));
-            CreateProductCommand newProduct = new CreateProductCommand("Testname", "TestDescription", new DateTime(2024, 05, 05), 1);
-
-            // Arrange+ Act + Assert
-            Assert.Throws<Exception>(() =>
-                productService
-                    .Create(newProduct));
-        }
-    }
-
-    [Fact]
     public void ShouldCreate_WhenParametersOk()
     {
         using (SayonaraContext db = DatabaseUtilities.CreateDb())
@@ -64,8 +32,12 @@ public class ProductTests
             db.Shops.AddRange(DatabaseUtilities.GetSeedingShops());
             db.SaveChanges();
 
-            ProductService productService = new ProductService(db, new FakeDateTimeService(new DateTime(2024, 05, 03)), new CategoryRepository(db));
-            CreateProductCommand newProduct = new CreateProductCommand("Testname", "TestDescription", new DateTime(2024, 05, 05), 1);
+            ProductService productService = new ProductService(
+                new FakeDateTimeService(new DateTime(2024, 05, 03)),
+                new CategoryRepository(db),
+                new ProductRepository(db),
+                new ProductRepository(db));
+            CreateProductCommand newProduct = new CreateProductCommand("Testname", "TestDescription", new DateTime(2024, 06, 05), 1);
 
             // Act
             productService.Create(newProduct);
@@ -83,11 +55,59 @@ public class ProductTests
             db.Shops.AddRange(DatabaseUtilities.GetSeedingShops());
             db.SaveChanges();
 
-            ProductService productService = new ProductService(db, new FakeDateTimeService(new DateTime(2024, 05, 03)), new CategoryRepository(db));
+            ProductService productService = new ProductService(
+                new FakeDateTimeService(new DateTime(2024, 05, 03)),
+                new CategoryRepository(db),
+                new ProductRepository(db),
+                new ProductRepository(db));
             CreateProductCommand newProduct = new CreateProductCommand("Testname", "TestDescription", new DateTime(2024, 05, 05), 99999);
 
             // Act + Assert
-            Assert.Throws<ProductServiceValidationException>(() => productService.Create(newProduct));
+
+            ProductServiceValidationException ex = Assert.Throws<ProductServiceValidationException>(() => productService.Create(newProduct));
+            Assert.Equal("Kategorie wurde nicht gefunden!", ex.Message);
+        }
+    }
+
+    [Fact]
+    public void ShouldThrowValidationException_WhenNameByCategoryNOTunique()
+    {
+        using (SayonaraContext db = DatabaseUtilities.CreateDb())
+        {
+            db.Shops.AddRange(DatabaseUtilities.GetSeedingShops());
+            db.SaveChanges();
+
+            ProductService productService = new ProductService(
+                new FakeDateTimeService(new DateTime(2024, 05, 03)),
+                new CategoryRepository(db),
+                new ProductRepository(db),
+                new ProductRepository(db));
+            CreateProductCommand newProduct = new CreateProductCommand("Telefon", "Telefon Description", new DateTime(2024, 05, 05), 1);
+
+            // Act + Assert
+            ProductServiceValidationException ex = Assert.Throws<ProductServiceValidationException>(() => productService.Create(newProduct));
+            Assert.Equal("Produkt existiert in dieser Kategorie bereits!", ex.Message);
+        }
+    }
+
+    [Fact]
+    public void Product_ShouldThrowExeption_WhenExpiryDateNot2WeeksInFurture()
+    {
+        using (SayonaraContext db = CreateDb())
+        {
+            db.Shops.AddRange(DatabaseUtilities.GetSeedingShops());
+            db.SaveChanges();
+
+            ProductService productService = new ProductService(
+                new FakeDateTimeService(new DateTime(2024, 05, 03)),
+                new CategoryRepository(db),
+                new ProductRepository(db),
+                new ProductRepository(db));
+            CreateProductCommand newProduct = new CreateProductCommand("Testname", "TestDescription", new DateTime(2024, 03, 05), 1);
+
+            // Arrange+ Act + Assert
+            ProductServiceValidationException ex = Assert.Throws<ProductServiceValidationException>(() => productService.Create(newProduct));
+            Assert.Equal("Ablaufdatum ist nicht in der Zukunft!", ex.Message);
         }
     }
 }

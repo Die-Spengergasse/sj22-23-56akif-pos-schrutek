@@ -19,5 +19,18 @@ namespace Spg.Sayonara.DomainModel.Exceptions
         public ProductServiceValidationException(string message, Exception innerException)
             : base(message, innerException)
         { }
+
+        public static ProductServiceValidationException FromCategoryNotFound()
+        {
+            return new ProductServiceValidationException("Kategorie wurde nicht gefunden!");
+        }
+        public static ProductServiceValidationException FromNameExists()
+        {
+            return new ProductServiceValidationException("Produkt existiert in dieser Kategorie bereits!");
+        }
+        public static ProductServiceValidationException FromDatenotInFuture()
+        {
+            return new ProductServiceValidationException("Ablaufdatum ist nicht in der Zukunft!");
+        }
     }
 }

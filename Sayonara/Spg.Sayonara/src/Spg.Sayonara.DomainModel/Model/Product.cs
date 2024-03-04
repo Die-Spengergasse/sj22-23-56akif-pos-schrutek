@@ -1,3 +1,5 @@
+using Spg.Sayonara.DomainModel.Dtos;
+
 namespace Spg.Sayonara.DomainModel.Model 
 {
     public class Product
@@ -26,5 +28,14 @@ namespace Spg.Sayonara.DomainModel.Model
         public int? CategoryId { get; set; }
         public Category? CategoryNavigation { get; set; } = default!; // Navigational Property
 
+        public ProductDto ToDto()
+        {
+            return new ProductDto(Name, Description, ExpiryDate);
+        }
+
+        public Product FromDto(CreateProductCommand dto)
+        {
+            return new Product(dto.Name, dto.Description, dto.ExpiryDate);
+        }
     }
 } 

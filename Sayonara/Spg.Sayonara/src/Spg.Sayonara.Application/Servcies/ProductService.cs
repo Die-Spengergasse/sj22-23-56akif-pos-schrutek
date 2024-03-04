@@ -1,4 +1,5 @@
-﻿using Spg.Sayonara.DomainModel.Dtos;
+﻿using Microsoft.Extensions.Logging;
+using Spg.Sayonara.DomainModel.Dtos;
 using Spg.Sayonara.DomainModel.Exceptions;
 using Spg.Sayonara.DomainModel.Interfaces;
 using Spg.Sayonara.DomainModel.Model;
@@ -15,19 +16,24 @@ namespace Spg.Sayonara.Application.Servcies
 {
     public class ProductService : IReadOnlyProductService, IWritableProductService
     {
-        private readonly SayonaraContext _context;
+        private readonly ILogger<ProductService> _logger;
         private readonly IDateTimeService _dateTimeService;
         private readonly IReadOnlyCategoryRepository _categoryRepository;
+        private readonly IReadOnlyProductRepository _readOnlyProductRepository;
+        private readonly IWritableProductRepository _writableProductRepository;
 
         public ProductService(
-            SayonaraContext context, 
+            ILogger<ProductService> logger,
             IDateTimeService dateTimeService, 
-            IReadOnlyCategoryRepository categoryRepository)
+            IReadOnlyCategoryRepository categoryRepository,
+            IReadOnlyProductRepository readOnlyProductRepository,
+            IWritableProductRepository writableProductRepository)
         {
-            //_context = new SayonaraContext();
+            _logger = logger;
             _dateTimeService = dateTimeService;
             _categoryRepository = categoryRepository;
-            _context = context;
+            _readOnlyProductRepository = readOnlyProductRepository;
+            _writableProductRepository = writableProductRepository;
         }
 
         /// <summary>
@@ -57,22 +63,48 @@ namespace Spg.Sayonara.Application.Servcies
         /// <param name="name"></param>
         /// <param name="description"></param>
         /// <param name="expiryDate"></param>
-        public int Create(CreateProductCommand command)
+        public ProductDto Create(CreateProductCommand command)
         {
+            _logger.LogInformation($"Parameters for Create(): Name:{command.Name}|Description:{command.Description}|ExpiryDate:{command.ExpiryDate}");
+
             // Init (Product benötigt eine Category)
-            Category existingCategory = _categoryRepository.GetCategoryOrDefault(command.CategoryId) 
-                ?? throw new ProductServiceValidationException("Kategorie wurde nicht gefunden!");
+            Category existingCategory = _categoryRepository.GetCategoryOrDefault(command.CategoryId)
+                ?? throw ProductServiceValidationException.FromCategoryNotFound();
 
             // Validation
+            // * Productname muss pro Kategorie eindeutig sein
+            if (_readOnlyProductRepository.ExistsByCategoryOrDefault(existingCategory.Id, command.Name))
+            {
+                //_logger.LogError();
+                throw ProductServiceValidationException.FromNameExists();
+            }
+            // * Ablaufdatum muss mind. 14 Tge in der zukuft liegen
+            if (command.ExpiryDate < DateTime.Now.AddDays(14))
+            {
+                //_logger.LogError();
+                throw ProductServiceValidationException.FromDatenotInFuture();
+            }
+            // * ...
+            // * ...
+            // * ...
+            // * ...
 
             // Act
             Product product = new Product(command.Name, command.Description, command.ExpiryDate, existingCategory);
 
             // Persist
-            _context.Products.Add(product);
-            _context.SaveChanges();
+            try
+            {
+                //_logger.LogInformation("Save...");
+                _writableProductRepository.Create(product);
+            }
+            catch (RepositoryCreateException ex)
+            {
+                //_logger.LogError();
+                throw new ProductServiceCreateException("Methode 'ProductDto Create(CreateProductCommand command)' ist fehlgeschlagen!", ex);
+            }
 
-            return 0;
+            return product.ToDto();
         }
     }
 }
