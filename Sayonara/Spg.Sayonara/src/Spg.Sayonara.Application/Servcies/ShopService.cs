@@ -1,4 +1,5 @@
-﻿using Spg.Sayonara.DomainModel.Model;
+﻿using Spg.Sayonara.DomainModel.Interfaces;
+using Spg.Sayonara.DomainModel.Model;
 using Spg.Sayonara.Repository;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Spg.Sayonara.Application.Servcies
 {
-    public class ShopService
+    public class ShopService : IReadOnlyShopService
     {
         private readonly ShopRepository _shopRepository;
 

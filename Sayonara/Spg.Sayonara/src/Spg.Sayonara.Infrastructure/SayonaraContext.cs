@@ -13,6 +13,7 @@ namespace Spg.Sayonara.Infrastructure
     {
         // 2. Sets abbilden (Mapping)
         public DbSet<Shop> Shops => Set<Shop>();
+        public DbSet<Category> Categories => Set<Category>();
         public DbSet<Product> Products => Set<Product>();
         // ...
         public DbSet<Customer> Customers => Set<Customer>();
@@ -39,6 +40,8 @@ namespace Spg.Sayonara.Infrastructure
             //modelBuilder.Entity<Shop>().HasKey(s => new { s.Id, s.Name }); // Wäre die Syntax für einen zusammengestzten PK.
 
             modelBuilder.Entity<Shop>().ToTable(nameof(Shop));
+
+            //modelBuilder.Entity<Product>().HasKey(p => p.Name); // Wenn Name als PK
 
             modelBuilder
                 .Entity<Shop>()

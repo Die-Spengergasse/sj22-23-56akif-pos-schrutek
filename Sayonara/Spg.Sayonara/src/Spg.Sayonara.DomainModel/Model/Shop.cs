@@ -32,7 +32,6 @@ namespace Spg.Sayonara.DomainModel.Model
         public PhoneNumber PhoneNumber { get; set; } = default!;
 
         private List<Category> _categories = new();
-        private string name = string.Empty;
 
         public IReadOnlyList<Category> Categories => _categories;
 
@@ -44,6 +43,7 @@ namespace Spg.Sayonara.DomainModel.Model
             if (newCategory is not null)
             {
                 newCategory.ShopNavigation = this;
+                newCategory.ShopId = Id;
                 _categories.Add(newCategory);
             }
             return this;

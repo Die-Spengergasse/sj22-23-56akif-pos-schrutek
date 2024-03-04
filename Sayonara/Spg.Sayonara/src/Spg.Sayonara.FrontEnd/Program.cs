@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Spg.Sayonara.Application.Servcies;
+using Spg.Sayonara.DomainModel.Interfaces;
 using Spg.Sayonara.Infrastructure;
 using Spg.Sayonara.Repository;
 using System.Globalization;
@@ -18,10 +19,14 @@ builder.Services.AddDbContext<SayonaraContext>(o =>
     o.UseSqlite(connectionString);
 });
 
-builder.Services.AddTransient<ShopRepository>();
-builder.Services.AddTransient<ShopService>();
+builder.Services.AddTransient<IReadOnlyShopService, ShopService>();
+builder.Services.AddTransient<IReadOnlyProductService, ProductService>();
+builder.Services.AddTransient<IWritableProductService, ProductService>();
 
-builder.Services.AddTransient(r => new ProductRepository(null!, 5));
+builder.Services.AddTransient<IReadOnlyShopRepository, ShopRepository>();
+builder.Services.AddTransient<IReadOnlyCategoryRepository, CategoryRepository>();
+builder.Services.AddTransient<IReadOnlyProductRepository, ProductRepository>();
+builder.Services.AddTransient<IWritableProductRepository, ProductRepository>();
 
 // I18n / L10n
 // https://code-maze.com/aspnetcore-localization/

@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Spg.Sayonara.DomainModel.Interfaces
 {
-    public interface IProductFilterBuilder
+    public interface IReadOnlyCategoryRepository
     {
-        IProductFilterBuilder ApplyNameContainsFilter(string namePart);
-
-        IQueryable<Product> Build();
+        public Category? GetCategoryOrDefault(int id);
     }
 }

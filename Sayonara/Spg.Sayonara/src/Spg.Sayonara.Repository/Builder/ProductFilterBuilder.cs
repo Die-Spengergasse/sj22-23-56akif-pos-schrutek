@@ -5,24 +5,24 @@ namespace Spg.Sayonara.Repository.Builder
 {
     public class ProductFilterBuilder : IProductFilterBuilder
     {
-        private IQueryable<Product> Products { get; set; }
+        public IQueryable<Product> EntityList { get; set; }
 
         public ProductFilterBuilder(IQueryable<Product> products)
         {
-            Products = products;
+            EntityList = products;
         }
 
         public IProductFilterBuilder ApplyNameContainsFilter(string namePart)
         {
-            Products = Products.Where(p => p.Name.ToLower().Contains(namePart.ToLower()));
+            EntityList = EntityList.Where(p => p.Name.ToLower().Contains(namePart.ToLower()));
             return this;
         }
 
         // TODO: Weiter Methoden (Filterung / Sortierung)
 
-        public void Build()
+        public IQueryable<Product> Build()
         {
-            // TODO: void durch richtigen datentyp ersetzen und prodkt zurückgeben.
+            return EntityList;
         }
     }
 }

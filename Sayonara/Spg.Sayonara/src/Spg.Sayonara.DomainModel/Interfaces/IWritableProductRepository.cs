@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace Spg.Sayonara.DomainModel.Interfaces
 {
-    public interface IProductFilterBuilder
+    public interface IWritableProductRepository
     {
-        IProductFilterBuilder ApplyNameContainsFilter(string namePart);
+        IProductUpdateBuilder UpdateBuilder(Product entity);
 
-        IQueryable<Product> Build();
+        int Create(Product entity);
+
+        void Delete(int id);
     }
 }

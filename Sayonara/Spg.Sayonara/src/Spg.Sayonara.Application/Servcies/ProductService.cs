@@ -1,5 +1,10 @@
-﻿using Spg.Sayonara.DomainModel.Model;
+﻿using Spg.Sayonara.DomainModel.Dtos;
+using Spg.Sayonara.DomainModel.Exceptions;
+using Spg.Sayonara.DomainModel.Interfaces;
+using Spg.Sayonara.DomainModel.Model;
 using Spg.Sayonara.Infrastructure;
+using Spg.Sayonara.Repository;
+using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,63 +13,66 @@ using System.Threading.Tasks;
 
 namespace Spg.Sayonara.Application.Servcies
 {
-    public class ProductService
+    public class ProductService : IReadOnlyProductService, IWritableProductService
     {
-        private readonly SayonaraContext _db;
+        private readonly SayonaraContext _context;
         private readonly IDateTimeService _dateTimeService;
+        private readonly IReadOnlyCategoryRepository _categoryRepository;
 
-        public ProductService(SayonaraContext db, IDateTimeService dateTimeService)
+        public ProductService(
+            SayonaraContext context, 
+            IDateTimeService dateTimeService, 
+            IReadOnlyCategoryRepository categoryRepository)
         {
-            //_db = new SayonaraContext();
+            //_context = new SayonaraContext();
             _dateTimeService = dateTimeService;
-            _db = db;
+            _categoryRepository = categoryRepository;
+            _context = context;
         }
 
-        public void Create(string name, string description, DateTime expiryDate)
+        /// <summary>
+        /// Legt ein neues Produkt an.
+        /// </summary>
+        /// <remarks>
+        /// Produkt wird nur angelegt, bei folgende Bedingungen:
+        /// * Die Kategorie muss vorhanden sein
+        /// * Der Name muss innerhalb einer Kategorie eindeutig sein
+        /// * Das Ablaufdatum muss mind. 14 Tage in der Zukunft liegen
+        /// * Das Produkt muss verfügbar sein.
+        /// * Maximale Anzahl
+        /// * Das Produkt muss einen gültigen Normalpreis haben
+        /// * User darf das tun
+        /// </remarks>
+        /// <exception cref="DomainModel.Exceptions.ProductServiceCreateException">
+        /// Wird geworfen, wenn beim speichern etwas schief gegangen ist.
+        /// </exception>
+        /// <exception cref="DomainModel.Exceptions.ProductServiceValidationException">
+        /// Wird geworfen, wenn eine Bedingung nicht zutrifft.
+        /// </exception>
+        /// <returns>Gibt erstamal 0 zurück.</returns>
+        /// <example>
+        /// var result = Create("asdasd", "asdasdasdsdadsaasd", new DateTime.Now);
+        /// </example>
+        /// <permission cref=""
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <param name="expiryDate"></param>
+        public int Create(CreateProductCommand command)
         {
-            // Init (Arrange)
-            Product newProduct = new Product(name, description, expiryDate, null);
+            // Init (Product benötigt eine Category)
+            Category existingCategory = _categoryRepository.GetCategoryOrDefault(command.CategoryId) 
+                ?? throw new ProductServiceValidationException("Kategorie wurde nicht gefunden!");
 
             // Validation
-            // Bedingungen:
-            // * Ablaufdatum muss 14 Tage in der Zukunft liegen
-            // * User darf das tun
-            // * ... 
-            // THE FOLLOWING IST BAD-CODING!!!!!!!!!!!!!!
-            //if (expiryDate >= _dateTimeService.Now.AddDays(14))
-            //{
-            //    // * Name muss eindeutig sein
-            //    if (_db.Products.Any(p => p.Name != name))
-            //    {
-            //        // * [unknown] darf nicht als Beschreibung verewendet werden.
-            //        if (description != "[unknown]")
-            //        {
-            //            // Act
-            //            _db.Products.Add(newProduct);
-            //            // Save
-            //            // TODO: Exception Handling
-            //            _db.SaveChanges();
-            //        }
-            //        else
-            //        {
-            //            throw new Exception();
-            //        }
-            //    }
-            //    else 
-            //    {
-            //        throw new Exception();
-            //    }
-            //}
-            //else
-            //{
-            //    throw new Exception();
-            //}
 
-            //// Act
-            //_db.Products.Add(newProduct);
-            //// Save
-            //// TODO: Exception Handling
-            //_db.SaveChanges();
+            // Act
+            Product product = new Product(command.Name, command.Description, command.ExpiryDate, existingCategory);
+
+            // Persist
+            _context.Products.Add(product);
+            _context.SaveChanges();
+
+            return 0;
         }
     }
 }
