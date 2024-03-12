@@ -57,6 +57,8 @@ namespace Spg.Sayonara.Infrastructure
             modelBuilder.Entity<Customer>().OwnsOne(s => s.PhoneNumber);
             modelBuilder.Entity<Customer>().OwnsOne(s => s.EMail);
 
+            modelBuilder.Entity<Shop>().Ignore(s => s.IsValid);
+
             // kann man tun, sollte man aber nicht. Ausnahme: EF Core verlangt es
             //modelBuilder.Entity<Shop>().HasMany(s => s.Categories).WithOne(c => c.ShopNavigation);
 

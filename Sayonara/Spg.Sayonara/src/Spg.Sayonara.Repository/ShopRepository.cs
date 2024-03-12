@@ -1,4 +1,5 @@
-﻿using Spg.Sayonara.DomainModel.Interfaces;
+﻿using Spg.Sayonara.DomainModel.Exceptions;
+using Spg.Sayonara.DomainModel.Interfaces;
 using Spg.Sayonara.DomainModel.Model;
 using Spg.Sayonara.Infrastructure;
 using Spg.Sayonara.Repository.Builder;
@@ -26,6 +27,11 @@ namespace Spg.Sayonara.Repository
         public IQueryable<Shop> GetAll()
         {
             return _context.Shops;
+        }
+        public Shop GetSingle(int id)
+        {
+            return _context.Shops.SingleOrDefault(s => s.Id == id) 
+                ?? throw RepositoryReadException.FromNotFound();
         }
     }
 }

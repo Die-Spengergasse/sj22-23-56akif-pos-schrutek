@@ -19,5 +19,10 @@ namespace Spg.Sayonara.DomainModel.Exceptions
         public RepositoryReadException(string message, Exception innerException)
             : base(message, innerException)
         { }
+
+        public static RepositoryReadException FromNotFound()
+        {
+            return new RepositoryReadException("Eintrag nicht gefunden!");
+        }
     }
 }

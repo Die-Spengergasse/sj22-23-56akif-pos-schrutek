@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Spg.Sayonara.Application.Servcies;
+using Spg.Sayonara.DomainModel.Exceptions;
 using Spg.Sayonara.DomainModel.Interfaces;
 
 namespace Spg.Sayonara.Api.Controllers
@@ -52,10 +54,40 @@ namespace Spg.Sayonara.Api.Controllers
             return Ok(_shopService.GetAll());
         }
 
-        [HttpGet("fast")]
-        public IActionResult GetFastAll()
+        [HttpGet("details")]
+        public IActionResult GetFiltered([FromHeader()]string filter, [FromQuery()]string order)
         {
-            return Ok(_shopService.GetAll());
+            // TODO: Impelementation
+            return Ok();
+        }
+
+        [HttpGet("{id}/details/{cols}")]
+        public IActionResult GetShop(int id, string cols)
+        {
+            try
+            {
+                var result = _shopService.GetSingle(id);
+
+                if (cols.ToLower() == "name")
+                {
+                    return Ok(new { result.Name });
+                }
+                if (cols.ToLower() == "companysuffix")
+                {
+                    return Ok(new { result.CompanySuffix });
+                }
+                return Ok(result);
+            }
+            catch (ServiceReadException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public void DeleteShop(int id)
+        {
+            // TODO:Delete
         }
     }
 }

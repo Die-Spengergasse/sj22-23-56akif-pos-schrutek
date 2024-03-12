@@ -11,5 +11,6 @@ namespace Spg.Sayonara.DomainModel.Interfaces
     {
         IShopFilterBuilder FilterBuilder { get; set; }
         IQueryable<Shop> GetAll();
+        Shop GetSingle(int id);
     }
 }

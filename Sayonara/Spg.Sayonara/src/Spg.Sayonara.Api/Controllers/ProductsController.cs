@@ -31,8 +31,22 @@ namespace Spg.Sayonara.Api.Controllers
             }
             catch (ProductServiceValidationException ex)
             {
-                return NotFound(ex.Message); // BadRequest
+                return NotFound(ex.Message);
             }
+        }
+
+        [HttpPut()]
+        public IActionResult Update(UpdateProductCommand command)
+        {
+            // TODO: Implementation
+            return Ok();
+        }
+
+        [HttpPatch()]
+        public IActionResult UpdateName(UpdateProductNameCommand command)
+        {
+            // TODO: Implementation
+            return Ok();
         }
     }
 }

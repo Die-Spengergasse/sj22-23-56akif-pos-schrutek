@@ -10,5 +10,6 @@ namespace Spg.Sayonara.DomainModel.Interfaces
     public interface IReadOnlyShopService
     {
         IQueryable<Shop> GetAll();
+        Shop GetSingle(int id);
     }
 }

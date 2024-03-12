@@ -1,4 +1,5 @@
-﻿using Spg.Sayonara.DomainModel.Interfaces;
+﻿using Spg.Sayonara.DomainModel.Exceptions;
+using Spg.Sayonara.DomainModel.Interfaces;
 using Spg.Sayonara.DomainModel.Model;
 using Spg.Sayonara.Repository;
 using System;
@@ -21,6 +22,19 @@ namespace Spg.Sayonara.Application.Servcies
         public IQueryable<Shop> GetAll()
         {
             return _shopRepository.GetAll();
+        }
+
+
+        public Shop GetSingle(int id)
+        {
+            try
+            {
+                return _shopRepository.GetSingle(id);
+            }
+            catch (RepositoryReadException ex)
+            {
+                throw ServiceReadException.FromNotFound(ex);
+            }
         }
     }
 }
