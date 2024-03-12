@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Spg.Sayonara.Application.Servcies;
+using Spg.Sayonara.DomainModel.Interfaces;
 
 namespace Spg.Sayonara.Api.Controllers
 {
@@ -34,11 +35,13 @@ namespace Spg.Sayonara.Api.Controllers
         // 500 Internal Server Error
         // ...
 
+        // Microsoft Learn dazu:
+        // https://learn.microsoft.com/de-de/aspnet/web-api/overview/web-api-routing-and-actions/routing-in-aspnet-web-api
+        // https://learn.microsoft.com/de-de/aspnet/web-api/overview/web-api-routing-and-actions/create-a-rest-api-with-attribute-routing
 
+        private readonly IReadOnlyShopService _shopService;
 
-        private readonly ShopService _shopService;
-
-        public ShopsController(ShopService shopService)
+        public ShopsController(IReadOnlyShopService shopService)
         {
             _shopService = shopService;
         }
@@ -49,7 +52,7 @@ namespace Spg.Sayonara.Api.Controllers
             return Ok(_shopService.GetAll());
         }
 
-        [HttpGet()]
+        [HttpGet("fast")]
         public IActionResult GetFastAll()
         {
             return Ok(_shopService.GetAll());

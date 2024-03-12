@@ -11,9 +11,9 @@ namespace Spg.Sayonara.Application.Servcies
 {
     public class ShopService : IReadOnlyShopService
     {
-        private readonly ShopRepository _shopRepository;
+        private readonly IReadOnlyShopRepository _shopRepository;
 
-        public ShopService(ShopRepository shopRepository)
+        public ShopService(IReadOnlyShopRepository shopRepository)
         {
             _shopRepository = shopRepository;
         }

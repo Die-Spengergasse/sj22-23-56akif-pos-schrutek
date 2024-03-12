@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Spg.Sayonara.DomainModel.Model;
+using Spg.Sayonara.DomainModel.Validation;
 using Spg.Sayonara.Infrastructure;
+using System.ComponentModel.DataAnnotations;
 
 namespace Spg.Sayonara.DomainModel.Test;
 
@@ -95,4 +97,50 @@ public class ModelTests
         }
     }
 
+    [Fact()]
+    public void Shop_ShouldBeFalse_WhenNameTooLong()
+    {
+        Shop shop = new Shop("asdadda", "asdasdasd", new Address("asdasd", "asdasd", "asdasd", "asdasd"), new PhoneNumber("0664", "78789"));
+        shop.Name = "asdasdasdadasdsaasdasdadsadsadssdaasdasdasdasdasdasdasdasdasdasdadsadsadsA";
+
+        Validator<Shop> shopValidator = new Validator<Shop>();
+        bool actual = shopValidator.Validate(shop);
+
+        Assert.False(actual);
+    }
+
+    [Fact()]
+    public void Shop_ShouldBeFalse_WhenNameContainsHomer()
+    {
+        Shop shop = new Shop("asdadda", "asdasdasd", new Address("asdasd", "asdasd", "asdasd", "asdasd"), new PhoneNumber("0664", "78789"));
+        shop.Name = "asdhomer";
+
+        Validator<Shop> shopValidator = new Validator<Shop>();
+        bool actual = shopValidator.Validate(shop);
+
+        Assert.False(actual);
+    }
+
+    [Fact()]
+    public void Shop_ShouldBeTrue()
+    {
+        Shop shop = new Shop("asdadda", "asdasdasd", new Address("asdasd", "asdasd", "asdasd", "asdasd"), new PhoneNumber("0664", "78789"));
+        shop.Name = "asd";
+
+        Validator<Shop> shopValidator = new Validator<Shop>();
+        bool actual = shopValidator.Validate(shop);
+
+        Assert.True(actual);
+    }
+
+    [Fact()]
+    public void Shop_ShouldBeFalse_WhenNameContainsHomerInConstructior()
+    {
+        Shop shop = new Shop("xxx_homer", "asdasdasd", new Address("asdasd", "asdasd", "asdasd", "asdasd"), new PhoneNumber("0664", "78789"));
+
+        Validator<Shop> shopValidator = new Validator<Shop>();
+        bool actual = shopValidator.Validate(shop);
+
+        Assert.False(actual);
+    }
 }

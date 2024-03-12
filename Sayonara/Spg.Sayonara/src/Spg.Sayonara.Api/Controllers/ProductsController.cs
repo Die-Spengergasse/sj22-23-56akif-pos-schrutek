@@ -12,8 +12,12 @@ namespace Spg.Sayonara.Api.Controllers
     {
         private readonly IWritableProductService _writableProductService;
 
+        public ProductsController(IWritableProductService writableProductService)
+        {
+            _writableProductService = writableProductService;
+        }
+
         [HttpPost()]
-        [Authorize(Roles = "Admin")]
         public IActionResult Create(CreateProductCommand command)
         {
             try

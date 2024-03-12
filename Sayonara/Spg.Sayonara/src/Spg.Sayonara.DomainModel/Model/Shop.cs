@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Spg.Sayonara.DomainModel.Validation.Validators;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -7,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Spg.Sayonara.DomainModel.Model
 {
-    public class Shop 
+    public class Shop
     {
         public Shop(
-            string name, 
-            string companySuffix, 
-            Address? address, 
+            string name,
+            string companySuffix,
+            Address? address,
             PhoneNumber phoneNumber)
         {
             Name = name;
@@ -25,8 +27,15 @@ namespace Spg.Sayonara.DomainModel.Model
         private Shop()
         { }
 
+        public bool IsValid { get; private set; } = true;
+
         public int Id { get; set; } // PK, wird von der DB erstellt, int/long macht auto increment
+
+        [NoHomerValidator("homer", ErrorMessage = "homer darf nicht rein")]
+        [StringLength(maximumLength: 10)]
         public string Name { get; set; }
+        
+        
         public string? CompanySuffix { get; set; } // in DB Allow NULL
         public Address? Address { get; set; }
         public PhoneNumber PhoneNumber { get; set; } = default!;
@@ -55,6 +64,15 @@ namespace Spg.Sayonara.DomainModel.Model
                 .Where(c => c is not null)
                 .Select(c => new Category(c.Name, this));
             _categories.AddRange(result);
+            return this;
+        }
+
+        public Shop Validate()
+        {
+            if (Name?.ToString()?.ToLower().Contains("homer") ?? false)
+            {
+                IsValid = false;
+            }
             return this;
         }
     }

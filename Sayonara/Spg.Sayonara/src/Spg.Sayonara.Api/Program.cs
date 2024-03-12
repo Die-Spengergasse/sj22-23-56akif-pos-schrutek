@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Spg.Sayonara.Application.Servcies;
+using Spg.Sayonara.DomainModel.Interfaces;
 using Spg.Sayonara.Infrastructure;
 using Spg.Sayonara.Repository;
 
@@ -22,8 +23,16 @@ builder.Services.AddDbContext<SayonaraContext>(options =>
     }
 });
 
-builder.Services.AddTransient<ShopService>();
-builder.Services.AddTransient<ShopRepository>();
+builder.Services.AddTransient<IDateTimeService, DateTimeService>();
+
+builder.Services.AddTransient<IReadOnlyShopService, ShopService>();
+builder.Services.AddTransient<IReadOnlyProductService, ProductService>();
+builder.Services.AddTransient<IWritableProductService, ProductService>();
+
+builder.Services.AddTransient<IReadOnlyShopRepository, ShopRepository>();
+builder.Services.AddTransient<IReadOnlyCategoryRepository, CategoryRepository>();
+builder.Services.AddTransient<IReadOnlyProductRepository, ProductRepository>();
+builder.Services.AddTransient<IWritableProductRepository, ProductRepository>();
 
 var app = builder.Build();
 

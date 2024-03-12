@@ -1,3 +1,4 @@
+using Castle.Core.Logging;
 using Microsoft.EntityFrameworkCore;
 using Spg.Sayonara.Application.Mock;
 using Spg.Sayonara.Application.Servcies;
@@ -29,6 +30,7 @@ public class ProductTests
     {
         using (SayonaraContext db = DatabaseUtilities.CreateDb())
         {
+            // Arrange
             db.Shops.AddRange(DatabaseUtilities.GetSeedingShops());
             db.SaveChanges();
 
@@ -52,6 +54,7 @@ public class ProductTests
     {
         using (SayonaraContext db = DatabaseUtilities.CreateDb())
         {
+            // Arrange
             db.Shops.AddRange(DatabaseUtilities.GetSeedingShops());
             db.SaveChanges();
 
@@ -63,7 +66,6 @@ public class ProductTests
             CreateProductCommand newProduct = new CreateProductCommand("Testname", "TestDescription", new DateTime(2024, 05, 05), 99999);
 
             // Act + Assert
-
             ProductServiceValidationException ex = Assert.Throws<ProductServiceValidationException>(() => productService.Create(newProduct));
             Assert.Equal("Kategorie wurde nicht gefunden!", ex.Message);
         }
@@ -74,6 +76,7 @@ public class ProductTests
     {
         using (SayonaraContext db = DatabaseUtilities.CreateDb())
         {
+            // Arrange
             db.Shops.AddRange(DatabaseUtilities.GetSeedingShops());
             db.SaveChanges();
 
@@ -95,6 +98,7 @@ public class ProductTests
     {
         using (SayonaraContext db = CreateDb())
         {
+            // Arrange
             db.Shops.AddRange(DatabaseUtilities.GetSeedingShops());
             db.SaveChanges();
 
@@ -105,7 +109,7 @@ public class ProductTests
                 new ProductRepository(db));
             CreateProductCommand newProduct = new CreateProductCommand("Testname", "TestDescription", new DateTime(2024, 03, 05), 1);
 
-            // Arrange+ Act + Assert
+            // Act + Assert
             ProductServiceValidationException ex = Assert.Throws<ProductServiceValidationException>(() => productService.Create(newProduct));
             Assert.Equal("Ablaufdatum ist nicht in der Zukunft!", ex.Message);
         }
