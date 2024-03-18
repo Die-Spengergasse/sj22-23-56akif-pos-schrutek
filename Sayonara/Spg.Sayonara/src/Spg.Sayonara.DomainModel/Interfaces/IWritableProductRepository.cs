@@ -12,7 +12,6 @@ namespace Spg.Sayonara.DomainModel.Interfaces
         IProductUpdateBuilder UpdateBuilder(Product entity);
 
         int Create(Product entity);
-
         void Delete(int id);
     }
 }
