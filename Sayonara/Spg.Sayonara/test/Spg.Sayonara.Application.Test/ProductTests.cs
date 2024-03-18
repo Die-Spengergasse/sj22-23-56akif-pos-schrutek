@@ -35,17 +35,23 @@ public class ProductTests
             db.SaveChanges();
 
             ProductService productService = new ProductService(
+                null,
                 new FakeDateTimeService(new DateTime(2024, 05, 03)),
                 new CategoryRepository(db),
                 new ProductRepository(db),
-                new ProductRepository(db));
+                new ProductRepository(db),
+                new GuidServiceMock());
             CreateProductCommand newProduct = new CreateProductCommand("Testname", "TestDescription", new DateTime(2024, 06, 05), 1);
 
             // Act
-            productService.Create(newProduct);
+            ProductDto actual = productService.Create(newProduct);
 
             // Assert
             Assert.Equal(16, db.Products.Count());
+            Assert.Equal("Testname", actual.Name);
+            Assert.Equal("TestDescription", actual.Description);
+            Assert.Equal(new DateTime(2024, 06, 05), actual.ExpiryDate);
+            Assert.Equal(new Guid("07d39349-fe02-4b68-a2ad-4841a048f52f"), actual.Guid);
         }
     }
 
@@ -59,10 +65,12 @@ public class ProductTests
             db.SaveChanges();
 
             ProductService productService = new ProductService(
+                null,
                 new FakeDateTimeService(new DateTime(2024, 05, 03)),
                 new CategoryRepository(db),
                 new ProductRepository(db),
-                new ProductRepository(db));
+                new ProductRepository(db),
+                new GuidServiceMock());
             CreateProductCommand newProduct = new CreateProductCommand("Testname", "TestDescription", new DateTime(2024, 05, 05), 99999);
 
             // Act + Assert
@@ -81,10 +89,12 @@ public class ProductTests
             db.SaveChanges();
 
             ProductService productService = new ProductService(
+                null,
                 new FakeDateTimeService(new DateTime(2024, 05, 03)),
                 new CategoryRepository(db),
                 new ProductRepository(db),
-                new ProductRepository(db));
+                new ProductRepository(db),
+                new GuidServiceMock());
             CreateProductCommand newProduct = new CreateProductCommand("Telefon", "Telefon Description", new DateTime(2024, 05, 05), 1);
 
             // Act + Assert
@@ -103,10 +113,12 @@ public class ProductTests
             db.SaveChanges();
 
             ProductService productService = new ProductService(
+                null,
                 new FakeDateTimeService(new DateTime(2024, 05, 03)),
                 new CategoryRepository(db),
                 new ProductRepository(db),
-                new ProductRepository(db));
+                new ProductRepository(db),
+                new GuidServiceMock());
             CreateProductCommand newProduct = new CreateProductCommand("Testname", "TestDescription", new DateTime(2024, 03, 05), 1);
 
             // Act + Assert

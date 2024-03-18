@@ -21,19 +21,22 @@ namespace Spg.Sayonara.Application.Servcies
         private readonly IReadOnlyCategoryRepository _categoryRepository;
         private readonly IReadOnlyProductRepository _readOnlyProductRepository;
         private readonly IWritableProductRepository _writableProductRepository;
+        private readonly IGuidService _guidService;
 
         public ProductService(
             ILogger<ProductService> logger,
-            IDateTimeService dateTimeService, 
+            IDateTimeService dateTimeService,
             IReadOnlyCategoryRepository categoryRepository,
             IReadOnlyProductRepository readOnlyProductRepository,
-            IWritableProductRepository writableProductRepository)
+            IWritableProductRepository writableProductRepository,
+            IGuidService guidService)
         {
             _logger = logger;
             _dateTimeService = dateTimeService;
             _categoryRepository = categoryRepository;
             _readOnlyProductRepository = readOnlyProductRepository;
             _writableProductRepository = writableProductRepository;
+            _guidService = guidService;
         }
 
         /// <summary>
@@ -65,7 +68,7 @@ namespace Spg.Sayonara.Application.Servcies
         /// <param name="expiryDate"></param>
         public ProductDto Create(CreateProductCommand command)
         {
-            _logger.LogInformation($"Parameters for Create(): Name:{command.Name}|Description:{command.Description}|ExpiryDate:{command.ExpiryDate}");
+            //_logger.LogInformation($"Parameters for Create(): Name:{command.Name}|Description:{command.Description}|ExpiryDate:{command.ExpiryDate}");
 
             // Init (Product benötigt eine Category)
             Category existingCategory = _categoryRepository.GetCategoryOrDefault(command.CategoryId)
@@ -91,6 +94,7 @@ namespace Spg.Sayonara.Application.Servcies
 
             // Act
             Product product = new Product(command.Name, command.Description, command.ExpiryDate, existingCategory);
+            product.Guid = _guidService.NewGuid(); // alt: Guid.NewGuid(); // Wird nur in der App vergeben
 
             // Persist
             try

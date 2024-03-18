@@ -21,6 +21,7 @@ namespace Spg.Sayonara.DomainModel.Model
         }
 
         public int Id { get; set; }
+        public Guid Guid { get; set; }
         public string Name { get; set; } = string.Empty;    // PK
         public string Description { get; set; } = string.Empty;
         public DateTime ExpiryDate { get; set; }
@@ -30,7 +31,7 @@ namespace Spg.Sayonara.DomainModel.Model
 
         public ProductDto ToDto()
         {
-            return new ProductDto(Name, Description, ExpiryDate);
+            return new ProductDto(Name, Description, ExpiryDate, Guid);
         }
 
         public Product FromDto(CreateProductCommand dto)
