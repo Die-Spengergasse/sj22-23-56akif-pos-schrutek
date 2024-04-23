@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Spg.Sayonara.DomainModel\Spg.Sayonara.DomainModel.csproj" />
-    <ProjectReference Include="..\Spg.Sayonara.Repository\Spg.Sayonara.Repository.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -1,4 +1,5 @@
-﻿using Spg.Sayonara.DomainModel.Model;
+﻿using Spg.Sayonara.DomainModel.Dtos;
+using Spg.Sayonara.DomainModel.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Spg.Sayonara.DomainModel.Interfaces
 {
     public interface IReadOnlyShopService
     {
-        IQueryable<Shop> GetAll();
-        Shop GetSingle(int id);
+        ShopDto GetFilteredByName(string nameFilter);
+        Shop GetSingle(string name);
     }
 }

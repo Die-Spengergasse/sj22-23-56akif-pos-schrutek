@@ -20,9 +20,13 @@ namespace Spg.Sayonara.DomainModel.Exceptions
             : base(message, innerException)
         { }
 
-        public static ServiceReadException FromNotFound(Exception ex)
+        public static ServiceReadException FromNotFound(string entityName, string name)
         {
-            return new ServiceReadException("Eintrag nicht gefunden!", ex);
+            return new ServiceReadException($"{entityName} {name} nicht gefunden!");
+        }
+        public static ServiceReadException FromNotFound(string entityName, string name, Exception ex)
+        {
+            return new ServiceReadException($"{entityName} {name} nicht gefunden!", ex);
         }
     }
 }

@@ -10,7 +10,6 @@ namespace Spg.Sayonara.DomainModel.Interfaces
     public interface IReadOnlyShopRepository
     {
         IShopFilterBuilder FilterBuilder { get; set; }
-        IQueryable<Shop> GetAll();
-        Shop GetSingle(int id);
+        Shop GetSingle(string name);
     }
 }

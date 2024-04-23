@@ -1,16 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Identity.Client;
 using Spg.Sayonara.DomainModel.Exceptions;
 using Spg.Sayonara.DomainModel.Interfaces;
 using Spg.Sayonara.DomainModel.Model;
 using Spg.Sayonara.Infrastructure;
 using Spg.Sayonara.Repository.Builder;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Spg.Sayonara.Repository
 {
@@ -54,25 +48,28 @@ namespace Spg.Sayonara.Repository
             throw new NotImplementedException();
         }
 
-        public Product? GetByCategoryOrDefault(int categoryId, string name) 
+        public TEntity? GetByGuid<TEntity>(Guid guid)
+            where TEntity : class, IFindableByGuid
         {
             return _context
-                .Categories?
-                .SingleOrDefault(c => c.Id == categoryId)?
-                .Products
-                .SingleOrDefault(p => p.Name == name);
+                .Set<TEntity>()
+                .SingleOrDefault(p => p.Guid == guid);
         }
 
-        public bool ExistsByCategoryOrDefault(int categoryId, string name)
+        public TEntity? GetByEMail<TEntity>(string eMail)
+            where TEntity : class, IFindableByEMail
         {
             return _context
-                .Categories?
-                .SingleOrDefault(c => c.Id == categoryId)?
-                .Products
-                .Any(p => p.Name == name)
-                    ?? false;
+                .Set<TEntity>()
+                .SingleOrDefault(p => p.EMail == eMail);
         }
 
-        //TODO: Find(id), Find(guid), Find(Name), ...
+        public TEntity? GetByLastName<TEntity>(string lastName)
+            where TEntity : class, IFindableByLastName
+        {
+            return _context
+                .Set<TEntity>()
+                .SingleOrDefault(p => p.LastName == lastName);
     }
 }
+    }

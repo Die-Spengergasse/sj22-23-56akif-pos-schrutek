@@ -1,12 +1,6 @@
 ﻿using Spg.Sayonara.DomainModel.Interfaces;
 using Spg.Sayonara.DomainModel.Model;
 using Spg.Sayonara.Infrastructure;
-using Spg.Sayonara.Repository.Builder;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Spg.Sayonara.Repository
 {

@@ -1,22 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
-using Spg.Sayonara.DomainModel.Dtos;
+﻿using Spg.Sayonara.DomainModel.Dtos;
 using Spg.Sayonara.DomainModel.Exceptions;
 using Spg.Sayonara.DomainModel.Interfaces;
 using Spg.Sayonara.DomainModel.Model;
-using Spg.Sayonara.Infrastructure;
-using Spg.Sayonara.Repository;
-using SQLitePCL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Spg.Sayonara.Application.Servcies
 {
     public class ProductService : IReadOnlyProductService, IWritableProductService
     {
-        private readonly ILogger<ProductService> _logger;
         private readonly IDateTimeService _dateTimeService;
         private readonly IReadOnlyCategoryRepository _categoryRepository;
         private readonly IReadOnlyProductRepository _readOnlyProductRepository;
@@ -24,14 +14,12 @@ namespace Spg.Sayonara.Application.Servcies
         private readonly IGuidService _guidService;
 
         public ProductService(
-            ILogger<ProductService> logger,
             IDateTimeService dateTimeService,
             IReadOnlyCategoryRepository categoryRepository,
             IReadOnlyProductRepository readOnlyProductRepository,
             IWritableProductRepository writableProductRepository,
             IGuidService guidService)
         {
-            _logger = logger;
             _dateTimeService = dateTimeService;
             _categoryRepository = categoryRepository;
             _readOnlyProductRepository = readOnlyProductRepository;
@@ -76,11 +64,7 @@ namespace Spg.Sayonara.Application.Servcies
 
             // Validation
             // * Productname muss pro Kategorie eindeutig sein
-            if (_readOnlyProductRepository.ExistsByCategoryOrDefault(existingCategory.Id, command.Name))
-            {
-                //_logger.LogError();
-                throw ProductServiceValidationException.FromNameExists();
-            }
+
             // * Ablaufdatum muss mind. 14 Tge in der zukuft liegen
             if (command.ExpiryDate < DateTime.Now.AddDays(14))
             {
@@ -93,8 +77,7 @@ namespace Spg.Sayonara.Application.Servcies
             // * ...
 
             // Act
-            Product product = new Product(command.Name, command.Description, command.ExpiryDate, existingCategory);
-            product.Guid = _guidService.NewGuid(); // alt: Guid.NewGuid(); // Wird nur in der App vergeben
+            Product product = new Product(_guidService.NewGuid(), command.Name, command.Description, command.ExpiryDate, existingCategory);
 
             // Persist
             try

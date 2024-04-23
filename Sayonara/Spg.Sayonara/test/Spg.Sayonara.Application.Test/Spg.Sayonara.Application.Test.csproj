@@ -26,6 +26,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Spg.Sayonara.Application\Spg.Sayonara.Application.csproj" />
     <ProjectReference Include="..\..\src\Spg.Sayonara.DomainModel\Spg.Sayonara.DomainModel.csproj" />
+    <ProjectReference Include="..\..\src\Spg.Sayonara.Infrastructure\Spg.Sayonara.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Spg.Sayonara.Repository\Spg.Sayonara.Repository.csproj" />
   </ItemGroup>
 
 </Project>

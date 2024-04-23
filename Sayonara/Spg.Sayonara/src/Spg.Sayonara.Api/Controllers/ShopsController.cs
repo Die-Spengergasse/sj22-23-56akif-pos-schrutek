@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Spg.Sayonara.Application.Servcies;
+using Spg.Sayonara.DomainModel.Dtos;
 using Spg.Sayonara.DomainModel.Exceptions;
 using Spg.Sayonara.DomainModel.Interfaces;
+using Spg.Sayonara.DomainModel.Model;
 
 namespace Spg.Sayonara.Api.Controllers
 {
@@ -48,21 +50,23 @@ namespace Spg.Sayonara.Api.Controllers
             _shopService = shopService;
         }
 
-        [HttpGet()]
-        public IActionResult GetAll()
-        {
-            return Ok(_shopService.GetAll());
-        }
-
         [HttpGet("details")]
-        public IActionResult GetFiltered([FromHeader()]string filter, [FromQuery()]string order)
+        public IActionResult GetFiltered([FromHeader()]string nameFilter)
         {
-            // TODO: Impelementation
-            return Ok();
+            try
+            {
+                ShopDto result = _shopService.GetFilteredByName(nameFilter);
+                return Ok(result);
+            }
+            catch (ServiceReadException ex) 
+            {
+                return NotFound(ex.Message);
+            }
         }
 
+        // api/Shoips?asdasdasdadasasdasdas=asdasd6asd5asd8as578d578asd78a
         [HttpGet("{id}/details/{cols}")]
-        public IActionResult GetShop(int id, string cols)
+        public IActionResult GetShop(string id, string cols)
         {
             try
             {

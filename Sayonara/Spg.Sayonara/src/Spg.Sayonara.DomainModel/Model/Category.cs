@@ -24,7 +24,7 @@ namespace Spg.Sayonara.DomainModel.Model
 
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public int ShopId { get; set; }
+        public string ShopName { get; set; }
         public Shop ShopNavigation { get; set; } = default!; // Navigational Property
 
         private List<Product> _products = new();
@@ -44,9 +44,9 @@ namespace Spg.Sayonara.DomainModel.Model
         public Category AddProducts(IEnumerable<Product> categories)
         {
             var result = categories
-                .Where(c => c is not null)
+                .Where(p => p is not null)
                 .Distinct()
-                .Select(c => new Product(c.Name, c.Description, c.ExpiryDate, this));
+                .Select(p => new Product(p.Guid, p.Name, p.Description, p.ExpiryDate, this));
             _products.AddRange(result);
             return this;
         }

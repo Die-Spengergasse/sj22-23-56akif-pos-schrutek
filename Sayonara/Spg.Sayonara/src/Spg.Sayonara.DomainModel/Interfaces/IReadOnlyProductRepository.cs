@@ -10,7 +10,6 @@ namespace Spg.Sayonara.DomainModel.Interfaces
     public interface IReadOnlyProductRepository
     {
         IProductFilterBuilder FilterBuilder { get; set; }
-        Product? GetByCategoryOrDefault(int categoryId, string name);
-        bool ExistsByCategoryOrDefault(int categoryId, string name);
+        Product? GetByGuid(Guid guid);
     }
 }

@@ -45,6 +45,7 @@ namespace Spg.Sayonara.Infrastructure
                     {
                         c.AddProducts(new Faker<Product>().CustomInstantiator(f =>
                             new Product(
+                                f.Random.Guid(),
                                 f.Commerce.ProductName(),
                                 f.Commerce.ProductDescription(),
                                 f.Date.Between(DateTime.Now.AddDays(10), DateTime.Now.AddDays(120))))

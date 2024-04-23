@@ -3,11 +3,6 @@ using Spg.Sayonara.DomainModel.Interfaces;
 using Spg.Sayonara.DomainModel.Model;
 using Spg.Sayonara.Infrastructure;
 using Spg.Sayonara.Repository.Builder;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Spg.Sayonara.Repository
 {
@@ -24,13 +19,9 @@ namespace Spg.Sayonara.Repository
             FilterBuilder = new ShopFilterBuilder(_context.Shops);
         }
 
-        public IQueryable<Shop> GetAll()
+        public Shop GetSingle(string name)
         {
-            return _context.Shops;
-        }
-        public Shop GetSingle(int id)
-        {
-            return _context.Shops.SingleOrDefault(s => s.Id == id) 
+            return _context.Shops.SingleOrDefault(s => s.Name == name) 
                 ?? throw RepositoryReadException.FromNotFound();
         }
     }

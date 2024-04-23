@@ -39,9 +39,10 @@ namespace Spg.Sayonara.Infrastructure
         {
             //modelBuilder.Entity<Shop>().HasKey(s => new { s.Id, s.Name }); // Wäre die Syntax für einen zusammengestzten PK.
 
-            modelBuilder.Entity<Shop>().ToTable(nameof(Shop));
-
-            //modelBuilder.Entity<Product>().HasKey(p => p.Name); // Wenn Name als PK
+            modelBuilder.Entity<Shop>()
+                .ToTable(nameof(Shop));
+            modelBuilder.Entity<Shop>()
+                .HasKey(s => s.Name);
 
             modelBuilder
                 .Entity<Shop>()

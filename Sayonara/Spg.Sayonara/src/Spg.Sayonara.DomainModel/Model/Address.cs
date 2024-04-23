@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Spg.Sayonara.DomainModel.Model
 {
-    public record Address(string Street, string HouseNumber, string City, string Zipcode);
+    public record Address(string? Street, string? HouseNumber, string? City, string? Zipcode);
 
     //public class Address
     //{

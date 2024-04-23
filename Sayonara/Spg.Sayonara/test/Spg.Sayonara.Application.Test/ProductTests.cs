@@ -1,11 +1,9 @@
-using Castle.Core.Logging;
 using Microsoft.EntityFrameworkCore;
 using Spg.Sayonara.Application.Mock;
 using Spg.Sayonara.Application.Servcies;
 using Spg.Sayonara.Application.Test.Helpers;
 using Spg.Sayonara.DomainModel.Dtos;
 using Spg.Sayonara.DomainModel.Exceptions;
-using Spg.Sayonara.DomainModel.Model;
 using Spg.Sayonara.Infrastructure;
 using Spg.Sayonara.Repository;
 
@@ -35,7 +33,6 @@ public class ProductTests
             db.SaveChanges();
 
             ProductService productService = new ProductService(
-                null,
                 new FakeDateTimeService(new DateTime(2024, 05, 03)),
                 new CategoryRepository(db),
                 new ProductRepository(db),
@@ -65,7 +62,6 @@ public class ProductTests
             db.SaveChanges();
 
             ProductService productService = new ProductService(
-                null,
                 new FakeDateTimeService(new DateTime(2024, 05, 03)),
                 new CategoryRepository(db),
                 new ProductRepository(db),
@@ -89,7 +85,6 @@ public class ProductTests
             db.SaveChanges();
 
             ProductService productService = new ProductService(
-                null,
                 new FakeDateTimeService(new DateTime(2024, 05, 03)),
                 new CategoryRepository(db),
                 new ProductRepository(db),
@@ -113,7 +108,6 @@ public class ProductTests
             db.SaveChanges();
 
             ProductService productService = new ProductService(
-                null,
                 new FakeDateTimeService(new DateTime(2024, 05, 03)),
                 new CategoryRepository(db),
                 new ProductRepository(db),

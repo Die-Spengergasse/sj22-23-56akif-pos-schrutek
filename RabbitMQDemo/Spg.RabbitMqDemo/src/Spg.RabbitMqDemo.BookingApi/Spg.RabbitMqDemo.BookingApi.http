@@ -1,0 +1,6 @@
+@Spg.RabbitMqDemo.BookingApi_HostAddress = http://localhost:5227
+
+GET {{Spg.RabbitMqDemo.BookingApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

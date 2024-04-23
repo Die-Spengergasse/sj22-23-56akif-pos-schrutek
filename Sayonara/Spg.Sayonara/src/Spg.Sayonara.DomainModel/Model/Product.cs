@@ -1,19 +1,22 @@
 using Spg.Sayonara.DomainModel.Dtos;
+using Spg.Sayonara.DomainModel.Interfaces;
 
 namespace Spg.Sayonara.DomainModel.Model 
 {
-    public class Product
+    public class Product : IFindableByGuid
     {
         private Product()
         { }
-        public Product(string name, string description, DateTime expiryDate)
+        public Product(Guid guid, string name, string description, DateTime expiryDate)
         {
+            Guid = guid;
             Name = name;
             Description = description;
             ExpiryDate = expiryDate;
         }
-        public Product(string name, string description, DateTime expiryDate, Category categoryNavigation)
+        public Product(Guid guid, string name, string description, DateTime expiryDate, Category categoryNavigation)
         {
+            Guid = guid;
             Name = name;
             Description = description;
             ExpiryDate = expiryDate;
@@ -21,8 +24,8 @@ namespace Spg.Sayonara.DomainModel.Model
         }
 
         public int Id { get; set; }
-        public Guid Guid { get; set; }
-        public string Name { get; set; } = string.Empty;    // PK
+        public Guid Guid { get; private set; }
+        public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public DateTime ExpiryDate { get; set; }
 
@@ -36,7 +39,7 @@ namespace Spg.Sayonara.DomainModel.Model
 
         public Product FromDto(CreateProductCommand dto)
         {
-            return new Product(dto.Name, dto.Description, dto.ExpiryDate);
+            return new Product(new Guid(), dto.Name, dto.Description, dto.ExpiryDate);
         }
     }
 } 

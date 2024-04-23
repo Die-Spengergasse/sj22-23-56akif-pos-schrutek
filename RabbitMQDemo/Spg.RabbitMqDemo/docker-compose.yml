@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  rabbitmq:
+    container_name: vogi-rabbitmq
+    image: rabbitmq:management
+    ports:
+      - 15672:15672
+      - 5672:5672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: '${RABBITMQ_DEFAULT_USER:-admin}'
+      RABBITMQ_DEFAULT_PASS: '${RABBITMQ_DEFAULT_PASS:-admin}'
+ 
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"  # Standard-Port für MongoDB
+    volumes:
+      - mongo_data:/data/db  # Persistenz für MongoDB-Daten
+ 
+volumes:
+  rabbitmq_data:  # Volume für RabbitMQ-Daten
+  mongo_data:  # Volume für MongoDB-Daten

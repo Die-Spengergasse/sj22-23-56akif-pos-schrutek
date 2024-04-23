@@ -15,8 +15,8 @@ namespace Spg.Sayonara.FrontEnd.Controllers
 
         public IActionResult Index()
         {
-            List<Shop> model = _shopService.GetAll().ToList();
-            return View(model);
+            //List<Shop> model = _shopService.GetAll().ToList();
+            return View(new List<Shop>());
         }
     }
 }

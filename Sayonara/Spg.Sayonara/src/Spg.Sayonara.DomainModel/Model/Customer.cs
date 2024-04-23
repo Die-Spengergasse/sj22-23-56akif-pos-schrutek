@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Spg.Sayonara.DomainModel.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Spg.Sayonara.DomainModel.Model
 {
-    public class Customer : Person
+    public class Customer : Person, IFindableByGuid, IFindableByEMail, IFindableByLastName
     {
         public string Username { get; set; } = string.Empty;
         public DateTime RegistrationDateTime { get; set; }

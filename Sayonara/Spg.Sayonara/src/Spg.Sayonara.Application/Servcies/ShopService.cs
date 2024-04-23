@@ -1,12 +1,7 @@
-﻿using Spg.Sayonara.DomainModel.Exceptions;
+﻿using Spg.Sayonara.DomainModel.Dtos;
+using Spg.Sayonara.DomainModel.Exceptions;
 using Spg.Sayonara.DomainModel.Interfaces;
 using Spg.Sayonara.DomainModel.Model;
-using Spg.Sayonara.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Spg.Sayonara.Application.Servcies
 {
@@ -19,21 +14,26 @@ namespace Spg.Sayonara.Application.Servcies
             _shopRepository = shopRepository;
         }
 
-        public IQueryable<Shop> GetAll()
+        public ShopDto GetFilteredByName(string nameFilter)
         {
-            return _shopRepository.GetAll();
+            return _shopRepository
+                .FilterBuilder
+                .ApplyNameContainsFilter(nameFilter)
+                .Build()
+                .SingleOrDefault() // ab hier NULL-Gefahr
+                ?.ToDto()
+                    ?? throw ServiceReadException.FromNotFound(nameof(Shop), nameFilter);
         }
 
-
-        public Shop GetSingle(int id)
+        public Shop GetSingle(string name)
         {
             try
             {
-                return _shopRepository.GetSingle(id);
+                return _shopRepository.GetSingle(name);
             }
             catch (RepositoryReadException ex)
             {
-                throw ServiceReadException.FromNotFound(ex);
+                throw ServiceReadException.FromNotFound(nameof(Shop), name, ex);
             }
         }
     }

@@ -68,5 +68,23 @@ namespace Spg.Sayonara.Repository.Test
                 Assert.Equal(5, actual.Count());
             }
         }
+
+        [Fact()]
+        public void Should_GetOneShopByGuid()
+        {
+            using (SayonaraContext db = DatabaseUtilities.CreateDb())
+            {
+                // Arrange
+                db.Shops.AddRange(DatabaseUtilities.GetSeedingShops());
+                db.SaveChanges();
+
+                // Act
+                var actual = new ProductRepository(db).GetByGuid(new Guid("fe6f32b9-726c-4c12-90ce-2b31aa2ffa18"));
+
+                // Assert
+                Assert.Equal(new Guid("fe6f32b9-726c-4c12-90ce-2b31aa2ffa18"), actual.Guid);
+                Assert.Equal("Telefon", actual.Name);
+            }
+        }
     }
 }

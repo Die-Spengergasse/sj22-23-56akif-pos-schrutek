@@ -1,4 +1,5 @@
-﻿using Spg.Sayonara.DomainModel.Validation.Validators;
+﻿using Spg.Sayonara.DomainModel.Dtos;
+using Spg.Sayonara.DomainModel.Validation.Validators;
 using System.ComponentModel.DataAnnotations;
 
 namespace Spg.Sayonara.DomainModel.Model
@@ -23,11 +24,9 @@ namespace Spg.Sayonara.DomainModel.Model
 
         public bool IsValid { get; private set; } = true;
 
-        public int Id { get; set; } // PK, wird von der DB erstellt, int/long macht auto increment
-
         [NoHomerValidator("homer", ErrorMessage = "homer darf nicht rein")]
         [StringLength(maximumLength: 10)]
-        public string Name { get; set; }
+        public string Name { get; set; } // P.K.
         
         
         public string? CompanySuffix { get; set; } // in DB Allow NULL
@@ -46,7 +45,7 @@ namespace Spg.Sayonara.DomainModel.Model
             if (newCategory is not null)
             {
                 newCategory.ShopNavigation = this;
-                newCategory.ShopId = Id;
+                newCategory.ShopName = Name;
                 _categories.Add(newCategory);
             }
             return this;
@@ -68,6 +67,16 @@ namespace Spg.Sayonara.DomainModel.Model
                 IsValid = false;
             }
             return this;
+        }
+
+        public ShopDto ToDto()
+        {
+            return new ShopDto(
+                Name, 
+                CompanySuffix, 
+                new AddressDto(Address?.Street, Address?.HouseNumber, Address?.City, Address?.Zipcode), 
+                new PhoneNumberDto(PhoneNumber.Prefix, PhoneNumber.Number), 
+                new());
         }
     }
 }
