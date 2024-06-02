@@ -1,4 +1,5 @@
 ﻿using Spg.Sayonara.DomainModel.Test.Helpers;
+using Spg.Sayonara.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Spg.Sayonara.DomainModel.Test
         [Fact()]
         public void ShouldCreateAndSeedDatabase()
         {
-            using (UnitTestContext db = DatabaseUtilities.CreateDb())
+            using (UnitTestContext db = DatabaseUtilities.CreateMemoryDb())
             {
                 // Arrange
                 var shops = DatabaseUtilities.GetSeedingShops();
@@ -29,6 +30,19 @@ namespace Spg.Sayonara.DomainModel.Test
                 Assert.Equal(3, db.Shops.Count());
                 Assert.Equal(9, db.Categories.Count());
                 Assert.Equal(15, db.Products.Count());
+            }
+        }
+
+        [Fact()]
+        public void ShouldCreateAndSeedDatabaseWithBogus()
+        {
+            using (UnitTestContext db = DatabaseUtilities.CreateDb())
+            {
+                // Act
+                new DbSeedService(db).Seed();
+
+                // Assert
+                Assert.Equal(50, db.Shops.Count());
             }
         }
     }

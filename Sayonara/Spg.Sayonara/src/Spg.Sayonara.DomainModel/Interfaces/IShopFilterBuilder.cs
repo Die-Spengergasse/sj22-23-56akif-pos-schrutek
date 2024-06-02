@@ -12,6 +12,13 @@ namespace Spg.Sayonara.DomainModel.Interfaces
         IQueryable<Shop> EntityList { get; set; }
 
         IShopFilterBuilder ApplyNameContainsFilter(string namePart);
+        IShopFilterBuilder ApplyNameStartsWithFilter(string namePart);
+        IShopFilterBuilder ApplyNameEndWithFilter(string namePart);
+        IShopFilterBuilder ApplyCompanySuffixContainsFilter(string namePart);
+        IShopFilterBuilder ApplyCompanyPhonePrefix(int prefix);
+        IShopFilterBuilder ApplyOrderByNameAsc(string column);
+
+
 
         IQueryable<Shop> Build();
     }

@@ -9,6 +9,18 @@ namespace Spg.Sayonara.DomainModel.Test.Helpers
     {
         public static UnitTestContext CreateDb()
         {
+            DbContextOptionsBuilder builder = new DbContextOptionsBuilder();
+            builder.UseSqlite("Data Source=.\\..\\..\\..\\..\\..\\Sayonara_Real.db");
+
+            UnitTestContext db = new UnitTestContext(builder.Options);
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+
+            return db;
+        }
+
+        public static UnitTestContext CreateMemoryDb()
+        {
             SqliteConnection connection = new SqliteConnection("Data Source=:memory:");
             connection.Open();
 

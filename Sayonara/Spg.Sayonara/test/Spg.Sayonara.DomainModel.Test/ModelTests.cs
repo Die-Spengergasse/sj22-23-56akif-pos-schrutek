@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Spg.Sayonara.DomainModel.Dtos;
 using Spg.Sayonara.DomainModel.Model;
+using Spg.Sayonara.DomainModel.Test.Helpers;
 using Spg.Sayonara.DomainModel.Validation;
 using Spg.Sayonara.Infrastructure;
 using System.ComponentModel.DataAnnotations;
@@ -9,19 +10,6 @@ namespace Spg.Sayonara.DomainModel.Test;
 
 public class ModelTests
 {
-    private SayonaraContext CreateDb()
-    {
-        DbContextOptionsBuilder builder = new DbContextOptionsBuilder();
-        builder.UseSqlite("Data Source=.\\..\\..\\..\\..\\..\\Sayonara_UnitTests.db");
-
-        SayonaraContext db = new SayonaraContext(builder.Options);
-        db.Database.EnsureDeleted();
-        db.Database.EnsureCreated();
-
-        return db;
-
-    }
-
     /// <summary>
     /// Naming Pattern: Action_Should..._When...
     /// </summary>
@@ -37,7 +25,7 @@ public class ModelTests
             );
 
         // Act
-        using (SayonaraContext db = CreateDb())
+        using (SayonaraContext db = DatabaseUtilities.CreateMemoryDb())
         {
             db.Shops.Add(newShop);
             db.SaveChanges();
@@ -60,7 +48,7 @@ public class ModelTests
             .AddCategory(new Category("Kleidung"));
 
         // Act
-        using (SayonaraContext db = CreateDb())
+        using (SayonaraContext db = DatabaseUtilities.CreateMemoryDb())
         {
             db.Shops.Add(newShop);
             db.SaveChanges();
@@ -87,7 +75,7 @@ public class ModelTests
             });
 
         // Act
-        using (SayonaraContext db = CreateDb())
+        using (SayonaraContext db = DatabaseUtilities.CreateMemoryDb())
         {
             db.Shops.Add(newShop);
             db.SaveChanges();

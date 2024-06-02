@@ -1,15 +1,10 @@
-﻿using Bogus.DataSets;
-using Spg.Sayonara.Application.Servcies;
+﻿using Spg.Sayonara.Application.Servcies;
 using Spg.Sayonara.Application.Test.Helpers;
+using Spg.Sayonara.Application.UseCases.Shop.Queries;
 using Spg.Sayonara.DomainModel.Dtos;
 using Spg.Sayonara.DomainModel.Exceptions;
 using Spg.Sayonara.Infrastructure;
 using Spg.Sayonara.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Spg.Sayonara.Application.Test
 {
@@ -27,7 +22,7 @@ namespace Spg.Sayonara.Application.Test
                 ShopService utt = new ShopService(new ShopRepository(db));
 
                 // Act
-                ShopDto actual = utt.GetFilteredByName("krimskrams");
+                ShopDto actual = utt.GetFiltered(new GetShopsQuery("krimskrams", "", DateTime.Now)).Last();
 
                 // Assert
                 Assert.Equal("Krimskrams", actual.Name);
@@ -47,8 +42,30 @@ namespace Spg.Sayonara.Application.Test
                 ShopService utt = new ShopService(new ShopRepository(db));
 
                 // Act + Assert
-                ServiceReadException ex = Assert.Throws<ServiceReadException>(() => utt.GetFilteredByName("krimskramsxxxx"));
+                ServiceReadException ex = Assert.Throws<ServiceReadException>(
+                    () => utt.GetFiltered(new GetShopsQuery("krimskramsxxxx", "", DateTime.Now)));
                 Assert.Equal($"Shop krimskramsxxxx nicht gefunden!", ex.Message);
+            }
+        }
+
+        [Fact()]
+        public void Should_FilterShopsStartsWithS()
+        {
+            using (SayonaraContext db = DatabaseUtilities.CreateDb())
+            {
+                // Arrange
+                db.Shops.AddRange(DatabaseUtilities.GetSeedingShops());
+                db.SaveChanges();
+
+                GetShopsFilteredModel request = new GetShopsFilteredModel(new GetShopsFilteredQuery("name sw s", ""));
+
+                GetShopsFilteredHandler utt = new GetShopsFilteredHandler(new ShopRepository(db));
+
+                // Act
+                var actual = utt.Handle(request, CancellationToken.None);
+
+                // Assert
+                Assert.Equal(1, actual.Result.Count());
             }
         }
     }

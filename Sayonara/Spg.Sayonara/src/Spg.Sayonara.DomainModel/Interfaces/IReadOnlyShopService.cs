@@ -10,7 +10,7 @@ namespace Spg.Sayonara.DomainModel.Interfaces
 {
     public interface IReadOnlyShopService
     {
-        ShopDto GetFilteredByName(string nameFilter);
+        IEnumerable<ShopDto> GetFiltered(GetShopsQuery query);
         Shop GetSingle(string name);
     }
 }

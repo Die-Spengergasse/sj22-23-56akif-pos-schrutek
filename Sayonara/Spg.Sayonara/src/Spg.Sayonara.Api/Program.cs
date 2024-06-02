@@ -1,8 +1,12 @@
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Spg.Sayonara.Application.Servcies;
+using Spg.Sayonara.Application.UseCases.Shop.Queries;
+using Spg.Sayonara.DomainModel.Dtos;
 using Spg.Sayonara.DomainModel.Interfaces;
 using Spg.Sayonara.Infrastructure;
 using Spg.Sayonara.Repository;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +39,9 @@ builder.Services.AddTransient<IReadOnlyProductRepository, ProductRepository>();
 builder.Services.AddTransient<IWritableProductRepository, ProductRepository>();
 
 builder.Services.AddTransient<IGuidService, GuidService>();
+
+builder.Services.AddMediatR(o => o.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+builder.Services.AddTransient<IRequestHandler<GetShopsFilteredModel, IQueryable<ShopDto>>, GetShopsFilteredHandler>();
 
 var app = builder.Build();
 

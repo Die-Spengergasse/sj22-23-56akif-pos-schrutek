@@ -22,8 +22,8 @@ public class HomeController : Controller
         _db = db;
         _localizer = localizer;
 
-        new DbSeedService(db)
-            .Seed();
+        //new DbSeedService(db)
+        //    .Seed();
     }
 
     public IActionResult Index()

@@ -1,7 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Spg.Sayonara.DomainModel\Spg.Sayonara.DomainModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UseCases\Customer\" />
+    <Folder Include="UseCases\Shop\Commands\" />
+    <Folder Include="UseCases\undsoweiter\" />
+    <Folder Include="UseCases\Product\" />
   </ItemGroup>
 
   <PropertyGroup>

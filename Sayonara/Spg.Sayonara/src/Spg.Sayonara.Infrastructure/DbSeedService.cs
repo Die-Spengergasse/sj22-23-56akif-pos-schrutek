@@ -24,15 +24,6 @@ namespace Spg.Sayonara.Infrastructure
             _db.Database.EnsureDeleted();
             _db.Database.EnsureCreated();
 
-            //var shops = new Faker<Shop>()
-            //    .Rules((f, s) =>
-            //    {
-            //        s.Name = f.Company.CompanyName();
-            //        // ...
-            //    })
-            //    .Generate(10)
-            //    .ToList();
-
             var shops = new Faker<Shop>()
                 .CustomInstantiator(
                     EntityInstatiators.InstantiateShop

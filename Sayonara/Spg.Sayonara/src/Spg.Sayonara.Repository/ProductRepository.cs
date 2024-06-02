@@ -61,7 +61,7 @@ namespace Spg.Sayonara.Repository
         {
             return _context
                 .Set<TEntity>()
-                .SingleOrDefault(p => p.EMail == eMail);
+                .SingleOrDefault(p => p.EMail.Address == eMail);
         }
 
         public TEntity? GetByLastName<TEntity>(string lastName)
@@ -71,5 +71,10 @@ namespace Spg.Sayonara.Repository
                 .Set<TEntity>()
                 .SingleOrDefault(p => p.LastName == lastName);
     }
-}
+
+        public Product? GetByGuid(Guid guid)
+        {
+            throw new NotImplementedException();
+        }
+    }
     }

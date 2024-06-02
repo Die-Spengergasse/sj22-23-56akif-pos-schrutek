@@ -14,15 +14,12 @@ namespace Spg.Sayonara.Application.Servcies
             _shopRepository = shopRepository;
         }
 
-        public ShopDto GetFilteredByName(string nameFilter)
+        public IEnumerable<ShopDto> GetFiltered(GetShopsQuery query)
         {
             return _shopRepository
                 .FilterBuilder
-                .ApplyNameContainsFilter(nameFilter)
                 .Build()
-                .SingleOrDefault() // ab hier NULL-Gefahr
-                ?.ToDto()
-                    ?? throw ServiceReadException.FromNotFound(nameof(Shop), nameFilter);
+                .Select(s => s.ToDto());
         }
 
         public Shop GetSingle(string name)
@@ -36,5 +33,7 @@ namespace Spg.Sayonara.Application.Servcies
                 throw ServiceReadException.FromNotFound(nameof(Shop), name, ex);
             }
         }
+
+
     }
 }

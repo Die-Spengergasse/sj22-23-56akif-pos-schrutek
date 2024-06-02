@@ -22,6 +22,47 @@ namespace Spg.Sayonara.Repository.Builder
             EntityList = EntityList.Where(p => p.Name.ToLower().Contains(namePart.ToLower()));
             return this;
         }
+        public IShopFilterBuilder ApplyNameStartsWithFilter(string namePart)
+        {
+            EntityList = EntityList.Where(p => p.Name.ToLower().StartsWith(namePart.ToLower()));
+            return this;
+        }
+        public IShopFilterBuilder ApplyNameEndWithFilter(string namePart)
+        {
+            EntityList = EntityList.Where(p => p.Name.ToLower().EndsWith(namePart.ToLower()));
+            return this;
+        }
+        public IShopFilterBuilder ApplyCompanySuffixContainsFilter(string namePart)
+        {
+            EntityList = EntityList.Where(p => p.CompanySuffix.ToLower().Contains(namePart.ToLower()));
+            return this;
+        }
+        public IShopFilterBuilder ApplyCompanyPhonePrefix(int prefix)
+        {
+            EntityList = EntityList.Where(p => p.PhoneNumber.Prefix.Contains(prefix.ToString()));
+            return this;
+        }
+
+        public IShopFilterBuilder ApplyOrderByNameAsc(string column)
+        {
+            switch (column)
+            {
+                case "name":
+                    EntityList = EntityList.OrderBy(p => p.Name);
+                    break;
+                case "suffix":
+                    EntityList = EntityList.OrderBy(p => p.CompanySuffix);
+                    break;
+                //...
+            }
+            return this;
+        }
+        public IShopFilterBuilder ApplyOrderByNameDesc()
+        {
+            EntityList = EntityList.OrderByDescending(p => p.Name);
+            return this;
+        }
+
 
         public IQueryable<Shop> Build()
         {

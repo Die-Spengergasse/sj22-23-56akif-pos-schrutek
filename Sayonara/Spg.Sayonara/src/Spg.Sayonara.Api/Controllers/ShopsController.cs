@@ -15,7 +15,7 @@ namespace Spg.Sayonara.Api.Controllers
     {
         // API-Design
         // <- URI -------------------------------------------------------...
-        // https://www.myshop.at/users?filterbyname=huber&state=activated&ysdadasd=asddas&asdasdasd=asddasd&....
+        // https://www.myshop.at/users?filterbyname=huber&state=activated&ysdadasd=asddas&asdasdasd=asddasd&....&...&...
         // <-------------------><----><----------------------------------...
         //         URL           PATH            QUERY-(String)
         //
@@ -50,15 +50,15 @@ namespace Spg.Sayonara.Api.Controllers
             _shopService = shopService;
         }
 
-        [HttpGet("details")]
-        public IActionResult GetFiltered([FromHeader()]string nameFilter)
+        [HttpGet()]
+        public IActionResult GetFiltered()
         {
             try
             {
-                ShopDto result = _shopService.GetFilteredByName(nameFilter);
+                List<ShopDto> result = _shopService.GetFiltered(null!).ToList();
                 return Ok(result);
             }
-            catch (ServiceReadException ex) 
+            catch (ServiceReadException ex)
             {
                 return NotFound(ex.Message);
             }
