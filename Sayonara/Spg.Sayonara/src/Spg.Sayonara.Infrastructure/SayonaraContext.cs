@@ -37,6 +37,8 @@ namespace Spg.Sayonara.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             //modelBuilder.Entity<Shop>().HasKey(s => new { s.Id, s.Name }); // Wäre die Syntax für einen zusammengestzten PK.
 
             modelBuilder.Entity<Shop>()

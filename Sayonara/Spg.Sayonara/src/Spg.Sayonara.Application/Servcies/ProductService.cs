@@ -2,6 +2,7 @@
 using Spg.Sayonara.DomainModel.Exceptions;
 using Spg.Sayonara.DomainModel.Interfaces;
 using Spg.Sayonara.DomainModel.Model;
+using Spg.Sayonara.DomainModel.Extensions;
 
 namespace Spg.Sayonara.Application.Servcies
 {
@@ -56,6 +57,15 @@ namespace Spg.Sayonara.Application.Servcies
         /// <param name="expiryDate"></param>
         public ProductDto Create(CreateProductCommand command)
         {
+            List<Product> result = _readOnlyProductRepository
+                .FilterBuilder
+                .ApplyNameContainsFilter("asd")
+                .ApplyDescriptionFilter("asdadw")
+                .Build()
+                .ToList();
+
+
+
             //_logger.LogInformation($"Parameters for Create(): Name:{command.Name}|Description:{command.Description}|ExpiryDate:{command.ExpiryDate}");
 
             // Init (Product benötigt eine Category)
